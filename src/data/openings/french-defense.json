@@ -1,0 +1,21 @@
+{
+  "id": "french-defense",
+  "name": "French Defense",
+  "eco": "C00",
+  "color": "black",
+  "difficulty": "beginner",
+  "description": "A solid defense with e6. Black challenges the center with d5.",
+  "rootFen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
+  "rootResponses": ["e6"],
+  "rootWeights": [1],
+  "moves": [
+    {
+      "san": "e6",
+      "fen": "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "commentary": "The French Defense - a solid choice that prepares d5.",
+      "engineResponses": ["d4", "Nc3", "Nf3"],
+      "responseWeights": [0.6, 0.25, 0.15],
+      "children": []
+    }
+  ]
+}

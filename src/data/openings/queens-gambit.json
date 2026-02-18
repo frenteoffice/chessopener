@@ -1,0 +1,30 @@
+{
+  "id": "queens-gambit",
+  "name": "Queen's Gambit",
+  "eco": "D06",
+  "color": "white",
+  "difficulty": "intermediate",
+  "description": "A classical opening with d4 and c4. One of the most important openings in chess.",
+  "rootFen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+  "rootResponses": ["d4"],
+  "rootWeights": [1],
+  "moves": [
+    {
+      "san": "d4",
+      "fen": "rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq d3 0 1",
+      "commentary": "The queen's pawn stakes a claim in the center.",
+      "engineResponses": ["d5"],
+      "responseWeights": [1],
+      "children": [
+        {
+          "san": "c4",
+          "fen": "rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq c3 0 2",
+          "commentary": "The Queen's Gambit - offering a pawn to gain central control.",
+          "engineResponses": ["dxc4", "e6", "c6"],
+          "responseWeights": [0.4, 0.35, 0.25],
+          "children": []
+        }
+      ]
+    }
+  ]
+}

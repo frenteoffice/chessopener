@@ -1,0 +1,21 @@
+{
+  "id": "kings-indian",
+  "name": "King's Indian Defense",
+  "eco": "E60",
+  "color": "black",
+  "difficulty": "intermediate",
+  "description": "A dynamic defense with g6 and Bg7. Black allows White's center then strikes back.",
+  "rootFen": "rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq d3 0 1",
+  "rootResponses": ["Nf6"],
+  "rootWeights": [1],
+  "moves": [
+    {
+      "san": "Nf6",
+      "fen": "rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 1 2",
+      "commentary": "Nf6 develops the knight and prepares the King's Indian setup with g6.",
+      "engineResponses": ["c4", "Nf3", "Bf4"],
+      "responseWeights": [0.6, 0.3, 0.1],
+      "children": []
+    }
+  ]
+}

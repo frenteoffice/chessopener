@@ -1,0 +1,21 @@
+{
+  "id": "caro-kann",
+  "name": "Caro-Kann Defense",
+  "eco": "B12",
+  "color": "black",
+  "difficulty": "beginner",
+  "description": "A solid defense with c6. Black builds a strong pawn structure.",
+  "rootFen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
+  "rootResponses": ["c6"],
+  "rootWeights": [1],
+  "moves": [
+    {
+      "san": "c6",
+      "fen": "rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "commentary": "The Caro-Kann - a solid response that prepares d5.",
+      "engineResponses": ["Nc3", "c4", "d4"],
+      "responseWeights": [0.5, 0.3, 0.2],
+      "children": []
+    }
+  ]
+}

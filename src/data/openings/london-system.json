@@ -1,0 +1,21 @@
+{
+  "id": "london-system",
+  "name": "London System",
+  "eco": "D00",
+  "color": "white",
+  "difficulty": "beginner",
+  "description": "A solid system with d4, Bf4, and e3. Easy to learn and play.",
+  "rootFen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+  "rootResponses": ["d4"],
+  "rootWeights": [1],
+  "moves": [
+    {
+      "san": "d4",
+      "fen": "rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq d3 0 1",
+      "commentary": "The queen's pawn controls the center and opens the bishop.",
+      "engineResponses": ["d5", "Nf6"],
+      "responseWeights": [0.6, 0.4],
+      "children": []
+    }
+  ]
+}

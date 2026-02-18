@@ -1,0 +1,21 @@
+{
+  "id": "sicilian-najdorf",
+  "name": "Sicilian Defense - Najdorf",
+  "eco": "B90",
+  "color": "black",
+  "difficulty": "intermediate",
+  "description": "The most popular response to 1.e4. The Najdorf variation with a6 is one of the sharpest.",
+  "rootFen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
+  "rootResponses": ["c5"],
+  "rootWeights": [1],
+  "moves": [
+    {
+      "san": "c5",
+      "fen": "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2",
+      "commentary": "The Sicilian - an asymmetrical response that fights for the center.",
+      "engineResponses": ["Nf3", "c3", "Nc3"],
+      "responseWeights": [0.7, 0.2, 0.1],
+      "children": []
+    }
+  ]
+}

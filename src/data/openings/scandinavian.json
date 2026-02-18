@@ -1,0 +1,21 @@
+{
+  "id": "scandinavian",
+  "name": "Scandinavian Defense",
+  "eco": "B01",
+  "color": "black",
+  "difficulty": "beginner",
+  "description": "An immediate challenge to e4 with d5. Direct and easy to understand.",
+  "rootFen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
+  "rootResponses": ["d5"],
+  "rootWeights": [1],
+  "moves": [
+    {
+      "san": "d5",
+      "fen": "rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 2",
+      "commentary": "The Scandinavian - an immediate strike at White's center.",
+      "engineResponses": ["exd5", "Nc3", "d3"],
+      "responseWeights": [0.8, 0.15, 0.05],
+      "children": []
+    }
+  ]
+}

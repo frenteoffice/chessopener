@@ -1,0 +1,21 @@
+{
+  "id": "pirc-defense",
+  "name": "Pirc Defense",
+  "eco": "B08",
+  "color": "black",
+  "difficulty": "intermediate",
+  "description": "A hypermodern defense with d6 and g6. Black allows White's center then attacks it.",
+  "rootFen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
+  "rootResponses": ["d6"],
+  "rootWeights": [1],
+  "moves": [
+    {
+      "san": "d6",
+      "fen": "rnbqkbnr/ppp1pppp/3p4/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "commentary": "The Pirc - a flexible defense that often leads to g6 and Bg7.",
+      "engineResponses": ["d4", "Nc3", "Nf3"],
+      "responseWeights": [0.5, 0.3, 0.2],
+      "children": []
+    }
+  ]
+}
