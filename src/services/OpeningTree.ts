@@ -46,6 +46,7 @@ export class OpeningTree {
         fen: this.rootFen,
         engineResponses: this.rootResponses,
         responseWeights: this.rootWeights,
+        children: this.root,
       }
     }
     return null

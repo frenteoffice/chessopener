@@ -66,7 +66,7 @@ export function BoardSection({ onMove, boardFlipped }: BoardSectionProps) {
   )
 
   const boardOrientation =
-    (playerColor === 'white') !== (boardFlipped ?? false) ? 'black' : 'white'
+    (playerColor === 'white') !== (boardFlipped ?? false) ? 'white' : 'black'
 
   const selectedSquareStyles = selectedSquare
     ? { [selectedSquare]: { backgroundColor: 'rgba(100, 200, 255, 0.4)' } }
