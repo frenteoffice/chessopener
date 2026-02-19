@@ -40,14 +40,17 @@ export function GameView() {
   const [engineReady, setEngineReady] = useState(false)
   const engineFirstMoveRequested = useRef(false)
   const openingTreeRef = useRef<OpeningTree | null>(null)
+  const loadedOpeningIdRef = useRef<string | null>(null)
 
   const openingId = useGameStore((s) => s.openingId)
-  useEffect(() => {
-    if (openingId) {
-      const data = openings.find((o) => o.id === openingId)
-      if (data) openingTreeRef.current = new OpeningTree(data)
+  // Build the tree synchronously during render so it's available on the first move
+  if (openingId && loadedOpeningIdRef.current !== openingId) {
+    const data = openings.find((o) => o.id === openingId)
+    if (data) {
+      openingTreeRef.current = new OpeningTree(data)
+      loadedOpeningIdRef.current = openingId
     }
-  }, [openingId])
+  }
 
   useEffect(() => {
     getStockfish()
@@ -148,7 +151,8 @@ export function GameView() {
       if (!moveResult) return
 
       let inTheory = false
-      if (tree && phase === 'opening') {
+      const currentPhaseBefore = useGameStore.getState().phase
+      if (tree && currentPhaseBefore === 'opening') {
         const node = tree.getNode(fenBeforeMove)
         const child = node ? tree.getChild(node, moveResult.san) : null
         inTheory = !!child
