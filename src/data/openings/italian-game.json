@@ -48,9 +48,34 @@
                           "san": "Bc5",
                           "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
                           "commentary": "Bc5 - the Giuoco Piano. Black develops the bishop to an active square.",
-                          "engineResponses": ["c3", "Nc3", "d3"],
+                          "engineResponses": ["c3", "Nc3", "b4"],
                           "responseWeights": [0.5, 0.3, 0.2],
-                          "children": []
+                          "children": [
+                            {
+                              "san": "c3",
+                              "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 5",
+                              "commentary": "c3 prepares d4 to challenge the center and support the e4 pawn.",
+                              "engineResponses": ["Nf6", "d6", "Be7"],
+                              "responseWeights": [0.55, 0.25, 0.2],
+                              "children": []
+                            },
+                            {
+                              "san": "Nc3",
+                              "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/2N2N2/PPPP1PPP/R1BQK2R b KQkq - 5 5",
+                              "commentary": "Nc3 develops the knight and creates tension in the center.",
+                              "engineResponses": ["Nf6", "d6"],
+                              "responseWeights": [0.65, 0.35],
+                              "children": []
+                            },
+                            {
+                              "san": "b4",
+                              "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/1PB1P3/5N2/P1PP1PPP/RNBQK2R b KQkq b3 0 5",
+                              "commentary": "The Evans Gambit sacrifices a pawn for rapid development and attack.",
+                              "engineResponses": ["Bxb4", "Bb6"],
+                              "responseWeights": [0.8, 0.2],
+                              "children": []
+                            }
+                          ]
                         }
                       ]
                     }

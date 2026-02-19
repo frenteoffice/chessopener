@@ -13,9 +13,81 @@
       "san": "c5",
       "fen": "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2",
       "commentary": "The Sicilian - an asymmetrical response that fights for the center.",
-      "engineResponses": ["Nf3", "c3", "Nc3"],
+      "engineResponses": ["Nf3", "Nc3", "c3"],
       "responseWeights": [0.7, 0.2, 0.1],
-      "children": []
+      "children": [
+        {
+          "san": "Nf3",
+          "fen": "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2",
+          "commentary": "Nf3 develops the knight and prepares d4.",
+          "engineResponses": ["d6"],
+          "responseWeights": [1],
+          "children": [
+            {
+              "san": "d6",
+              "fen": "rnbqkbnr/pp2pppp/3p4/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 3",
+              "commentary": "d6 supports c5 and prepares Nf6.",
+              "engineResponses": ["d4"],
+              "responseWeights": [1],
+              "children": [
+                {
+                  "san": "d4",
+                  "fen": "rnbqkbnr/pp2pppp/3p4/2pP4/4P3/5N2/PPP2PPP/RNBQKB1R b KQkq - 0 3",
+                  "commentary": "d4 opens the center. The Open Sicilian.",
+                  "engineResponses": ["cxd4"],
+                  "responseWeights": [1],
+                  "children": [
+                    {
+                      "san": "cxd4",
+                      "fen": "rnbqkbnr/pp2pppp/3p4/8/3pP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 0 4",
+                      "commentary": "Black takes the pawn. White will recapture with the knight.",
+                      "engineResponses": ["Nxd4"],
+                      "responseWeights": [1],
+                      "children": [
+                        {
+                          "san": "Nxd4",
+                          "fen": "rnbqkbnr/pp2pppp/3p4/8/3NP3/8/PPP2PPP/RNBQKB1R b KQkq - 0 4",
+                          "commentary": "Nxd4 recaptures and develops. The knight is well placed in the center.",
+                          "engineResponses": ["Nf6", "Nc6", "e5"],
+                          "responseWeights": [0.55, 0.25, 0.2],
+                          "children": [
+                            {
+                              "san": "Nf6",
+                              "fen": "rnbqkb1r/pp2pppp/3p1n2/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 1 5",
+                              "commentary": "Nf6 develops and attacks e4.",
+                              "engineResponses": ["Nc3"],
+                              "responseWeights": [1],
+                              "children": [
+                                {
+                                  "san": "Nc3",
+                                  "fen": "rnbqkb1r/pp2pppp/3p1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R b KQkq - 2 5",
+                                  "commentary": "Nc3 develops and defends e4.",
+                                  "engineResponses": ["a6", "e6", "Nc6"],
+                                  "responseWeights": [0.5, 0.25, 0.25],
+                                  "children": [
+                                    {
+                                      "san": "a6",
+                                      "fen": "rnbqkb1r/1p2pppp/p2p1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 6",
+                                      "commentary": "The Najdorf. a6 prepares b5 and prevents Bb5.",
+                                      "engineResponses": ["Bg5", "Be3", "Be2"],
+                                      "responseWeights": [0.5, 0.3, 0.2],
+                                      "children": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }

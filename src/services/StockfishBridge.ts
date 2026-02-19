@@ -57,6 +57,26 @@ export class StockfishBridge {
     })
   }
 
+  async evaluate(fen: string, depth = 12): Promise<number> {
+    return new Promise((resolve) => {
+      let latestScore = 0
+      const handler = (e: MessageEvent) => {
+        const line = e.data as string
+        const cpMatch = line.match(/score cp (-?\d+)/)
+        if (cpMatch) {
+          latestScore = parseInt(cpMatch[1], 10)
+        }
+        if (line.startsWith('bestmove ')) {
+          this.worker.removeEventListener('message', handler)
+          resolve(latestScore)
+        }
+      }
+      this.worker.addEventListener('message', handler)
+      this.worker.postMessage(`position fen ${fen}`)
+      this.worker.postMessage(`go depth ${depth}`)
+    })
+  }
+
   async setElo(elo: number): Promise<void> {
     this.worker.postMessage('setoption name UCI_LimitStrength value true')
     this.worker.postMessage(`setoption name UCI_Elo value ${elo}`)

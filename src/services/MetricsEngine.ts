@@ -41,8 +41,15 @@ export function centerControl(chess: ChessType): { white: number; black: number 
 export function pawnStructure(chess: ChessType, color: 'white' | 'black'): string {
   const board = chess.board()
   const colorCode = color === 'white' ? 'w' : 'b'
-  const pawns = board.flat().filter((sq) => sq?.type === 'p' && sq.color === colorCode)
-  const files = pawns.map((p) => (p as { square: string }).square.charCodeAt(0) - 97)
+  const files: number[] = []
+  for (let rank = 0; rank < 8; rank++) {
+    for (let file = 0; file < 8; file++) {
+      const piece = board[rank]?.[file]
+      if (piece?.type === 'p' && piece.color === colorCode) {
+        files.push(file)
+      }
+    }
+  }
 
   const doubled = files.some((f, i) => files.indexOf(f) !== i)
   const isolated = files.some(
@@ -50,9 +57,10 @@ export function pawnStructure(chess: ChessType, color: 'white' | 'black'): strin
   )
   const fileSet = new Set(files)
 
+  if (doubled && isolated) return 'doubled + isolated'
   if (doubled) return 'doubled pawns'
   if (isolated) return 'isolated pawn'
-  if (fileSet.size >= 4 && !doubled && !isolated) return 'solid pawn chain'
+  if (fileSet.size >= 4) return 'solid pawn chain'
   return 'normal'
 }
 

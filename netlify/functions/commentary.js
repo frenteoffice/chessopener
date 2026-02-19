@@ -1,6 +1,40 @@
+const RATE_LIMIT_REQUESTS = 30
+const RATE_LIMIT_WINDOW_MS = 60_000
+const ipCounts = new Map()
+
+function getClientIp(event) {
+  const forwarded = event.headers?.['x-forwarded-for']
+  if (forwarded) return forwarded.split(',')[0].trim()
+  return event.headers?.['x-nf-client-connection-ip'] ?? 'unknown'
+}
+
+function checkRateLimit(ip) {
+  const now = Date.now()
+  const record = ipCounts.get(ip)
+  if (!record) {
+    ipCounts.set(ip, { count: 1, windowStart: now })
+    return true
+  }
+  if (now - record.windowStart > RATE_LIMIT_WINDOW_MS) {
+    record.count = 1
+    record.windowStart = now
+    return true
+  }
+  record.count++
+  return record.count <= RATE_LIMIT_REQUESTS
+}
+
 export async function handler(event, context) {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) }
+  }
+
+  const ip = getClientIp(event)
+  if (!checkRateLimit(ip)) {
+    return {
+      statusCode: 429,
+      body: JSON.stringify({ error: 'Too many requests. Limit: 30 per minute.' }),
+    }
   }
 
   let body

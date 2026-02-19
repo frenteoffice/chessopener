@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { Chess } from 'chess.js'
-import type { Phase, PlayerColor, Metrics } from '@/types'
+import type { Phase, PlayerColor, Metrics, OpeningNode } from '@/types'
 import { computeAllMetrics } from '@/services/MetricsEngine'
 
 const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
@@ -20,9 +20,9 @@ interface GameStore {
   view: View
   phase: Phase
   fen: string
-  history: { san: string; fen: string; color: 'w' | 'b'; inTheory?: boolean }[]
+  history: { san: string; fen: string; color: 'w' | 'b'; inTheory?: boolean; from?: string; to?: string }[]
   openingId: string | null
-  openingNode: unknown | null
+  openingNode: OpeningNode | null
   metrics: Metrics
   commentary: string
   commentaryLoading: boolean
@@ -30,12 +30,14 @@ interface GameStore {
   playerColor: PlayerColor
   engineElo: number
   chess: Chess
+  pendingMove: string | null
+  boardFlipped: boolean
+  evaluation: number | null
   setFen: (fen: string) => void
   setPhase: (phase: Phase) => void
   setHistory: (history: GameStore['history']) => void
-  addMove: (san: string, fen: string, color: 'w' | 'b', inTheory?: boolean) => void
   setOpeningId: (id: string | null) => void
-  setOpeningNode: (node: unknown | null) => void
+  setOpeningNode: (node: OpeningNode | null) => void
   setMetrics: (metrics: Metrics) => void
   setCommentary: (commentary: string) => void
   setCommentaryLoading: (loading: boolean) => void
@@ -43,6 +45,9 @@ interface GameStore {
   setPlayerColor: (color: PlayerColor) => void
   setEngineElo: (elo: number) => void
   setView: (view: View) => void
+  setPendingMove: (pendingMove: string | null) => void
+  setBoardFlipped: (boardFlipped: boolean) => void
+  setEvaluation: (evaluation: number | null) => void
   resetGame: (playerColor?: PlayerColor, openingId?: string | null) => void
   updateMetrics: (metricsUpdater: (prev: Metrics) => Metrics) => void
   applyMove: (move: { from: string; to: string; promotion?: string }, inTheory?: boolean) => boolean
@@ -62,16 +67,18 @@ export const useGameStore = create<GameStore>((set) => ({
   playerColor: 'white',
   engineElo: 1200,
   chess: new Chess(),
+  pendingMove: null,
+  boardFlipped: false,
+  evaluation: null,
 
   setFen: (fen) => set({ fen }),
   setPhase: (phase) => set({ phase }),
   setHistory: (history) => set({ history }),
-  addMove: (san, fen, color, inTheory) =>
-    set((state) => ({
-      history: [...state.history, { san, fen, color, inTheory }],
-    })),
   setOpeningId: (openingId) => set({ openingId }),
-  setOpeningNode: (openingNode) => set({ openingNode }),
+  setPendingMove: (pendingMove) => set({ pendingMove }),
+  setBoardFlipped: (boardFlipped) => set({ boardFlipped }),
+  setEvaluation: (evaluation) => set({ evaluation }),
+  setOpeningNode: (node) => set({ openingNode: node }),
   setMetrics: (metrics) => set({ metrics }),
   setCommentary: (commentary) => set({ commentary }),
   setCommentaryLoading: (commentaryLoading) => set({ commentaryLoading }),
@@ -95,6 +102,9 @@ export const useGameStore = create<GameStore>((set) => ({
       engineThinking: false,
       playerColor,
       chess,
+      pendingMove: null,
+      boardFlipped: false,
+      evaluation: null,
     })
   },
 
@@ -130,7 +140,17 @@ export const useGameStore = create<GameStore>((set) => ({
       }
       set((state) => ({
         fen: chess.fen(),
-        history: [...state.history, { san: result.san, fen: chess.fen(), color, inTheory }],
+        history: [
+          ...state.history,
+          {
+            san: result.san,
+            fen: chess.fen(),
+            color,
+            inTheory,
+            from: result.from,
+            to: result.to,
+          },
+        ],
         chess,
         metrics,
       }))

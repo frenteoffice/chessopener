@@ -3,6 +3,8 @@ import type { MetricsDelta } from '@/types'
 const COMMENTARY_API_URL =
   import.meta.env.VITE_COMMENTARY_API_URL || '/.netlify/functions/commentary'
 
+const COMMENTARY_ENABLED = import.meta.env.VITE_COMMENTARY_ENABLED === 'true'
+
 export class CommentaryService {
   async getCommentary(
     openingCommentary: string | undefined,
@@ -21,6 +23,10 @@ export class CommentaryService {
     delta: MetricsDelta,
     fen: string
   ): Promise<string> {
+    if (!COMMENTARY_ENABLED) {
+      return ''
+    }
+
     const prompt = `
 A chess player just played ${moveSan}.
 Piece activity changed by ${delta.pieceActivity}.
@@ -39,11 +45,14 @@ referencing the metric changes. Use simple language suitable for a
         body: JSON.stringify({ prompt }),
         headers: { 'Content-Type': 'application/json' },
       })
-      if (!res.ok) throw new Error('Commentary API error')
+      if (!res.ok) {
+        if (res.status === 429) return 'Commentary limit reached. Try again in a minute.'
+        throw new Error(`Commentary API error: ${res.status}`)
+      }
       const { text } = (await res.json()) as { text: string }
       return text
     } catch {
-      return 'Commentary unavailable. Continue playing to build your understanding.'
+      return 'Commentary unavailable.'
     }
   }
 }

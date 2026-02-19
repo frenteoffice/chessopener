@@ -19,10 +19,37 @@ A web-based chess opening trainer that teaches *why* moves work, not just *what*
 
 ## Development
 
+### Basic (no commentary)
+
 ```bash
 npm install
 npm run dev
 ```
+
+This starts the board, engine, and opening tree. Commentary for off-book moves requires a Netlify function (see below) and will be silently skipped.
+
+### With LLM commentary (requires Netlify CLI)
+
+Install the Netlify CLI if you don't have it:
+
+```bash
+npm install -g netlify-cli
+```
+
+Create a `.env` file in the project root:
+
+```
+OPENAI_API_KEY=sk-...your-key-here...
+VITE_COMMENTARY_ENABLED=true
+```
+
+Then run:
+
+```bash
+netlify dev
+```
+
+This starts both the Vite dev server and the Netlify functions server locally. Commentary will be generated for off-book moves.
 
 ## Build
 

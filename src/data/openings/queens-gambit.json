@@ -17,12 +17,91 @@
       "responseWeights": [1],
       "children": [
         {
-          "san": "c4",
-          "fen": "rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq c3 0 2",
-          "commentary": "The Queen's Gambit - offering a pawn to gain central control.",
-          "engineResponses": ["dxc4", "e6", "c6"],
-          "responseWeights": [0.4, 0.35, 0.25],
-          "children": []
+          "san": "d5",
+          "fen": "rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq d6 0 2",
+          "commentary": "Black mirrors with d5, establishing a classical pawn center.",
+          "engineResponses": ["c4"],
+          "responseWeights": [1],
+          "children": [
+            {
+              "san": "c4",
+              "fen": "rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq c3 0 2",
+              "commentary": "The Queen's Gambit - offering a pawn to gain central control.",
+              "engineResponses": ["e6", "dxc4", "c6", "Nf6"],
+              "responseWeights": [0.4, 0.25, 0.25, 0.1],
+              "children": [
+                {
+                  "san": "e6",
+                  "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3",
+                  "commentary": "The Queen's Gambit Declined. Black supports the center without taking the pawn.",
+                  "engineResponses": ["Nc3", "Nf3"],
+                  "responseWeights": [0.6, 0.4],
+                  "children": [
+                    {
+                      "san": "Nc3",
+                      "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/2PP4/2N5/PP2PPPP/R1BQKBNR b KQkq - 1 3",
+                      "commentary": "Nc3 develops and increases pressure on d5.",
+                      "engineResponses": ["Nf6"],
+                      "responseWeights": [1],
+                      "children": [
+                        {
+                          "san": "Nf6",
+                          "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+                          "commentary": "Nf6 develops the knight to its natural square.",
+                          "engineResponses": ["Bg5", "Nf3"],
+                          "responseWeights": [0.6, 0.4],
+                          "children": [
+                            {
+                              "san": "Bg5",
+                              "fen": "rnbqkb1r/ppp2ppp/4pn2/3p2B1/2PP4/2N5/PP2PPPP/R2QKBNR b KQkq - 3 4",
+                              "commentary": "Bg5 pins the knight and increases pressure.",
+                              "engineResponses": ["Be7"],
+                              "responseWeights": [1],
+                              "children": [
+                                {
+                                  "san": "Be7",
+                                  "fen": "rnbqk2r/ppp1bppp/4pn2/3p2B1/2PP4/2N5/PP2PPPP/R2QKBNR w KQkq - 4 5",
+                                  "commentary": "Be7 breaks the pin and completes development.",
+                                  "engineResponses": ["e3", "Nf3"],
+                                  "responseWeights": [0.6, 0.4],
+                                  "children": [
+                                    {
+                                      "san": "e3",
+                                      "fen": "rnbqk2r/ppp1bppp/4pn2/3p2B1/2PP4/2N1P3/PP3PPP/R2QKBNR b KQkq - 0 5",
+                                      "commentary": "e3 solidifies the center. The mainline Queen's Gambit Declined.",
+                                      "engineResponses": ["O-O", "Nbd7"],
+                                      "responseWeights": [0.7, 0.3],
+                                      "children": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "san": "dxc4",
+                  "fen": "rnbqkbnr/ppp1pppp/8/8/2pP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3",
+                  "commentary": "The Queen's Gambit Accepted. Black takes the pawn but gives up the center.",
+                  "engineResponses": ["e3", "e4", "Nf3"],
+                  "responseWeights": [0.5, 0.3, 0.2],
+                  "children": []
+                },
+                {
+                  "san": "c6",
+                  "fen": "rnbqkbnr/pp2pppp/2p5/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3",
+                  "commentary": "The Slav Defense. Black supports d5 with the c-pawn.",
+                  "engineResponses": ["Nf3", "Nc3"],
+                  "responseWeights": [0.6, 0.4],
+                  "children": []
+                }
+              ]
+            }
+          ]
         }
       ]
     }

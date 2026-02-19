@@ -70,4 +70,16 @@ export class OpeningTree {
     }
     return null
   }
+
+  /** Returns the root node with children for the player's first move (White openings). */
+  getRootNode(): OpeningNode | null {
+    if (!this.rootFen) return null
+    return {
+      san: '',
+      fen: this.rootFen,
+      engineResponses: this.rootResponses,
+      responseWeights: this.rootWeights,
+      children: this.root,
+    }
+  }
 }

@@ -31,8 +31,12 @@ export function GameView() {
     setEngineThinking,
     setPhase,
     setOpeningNode,
+    setPendingMove,
+    setEvaluation,
     engineElo,
   } = useGameStore()
+  const pendingMove = useGameStore((s) => s.pendingMove)
+  const history = useGameStore((s) => s.history)
   const [engineReady, setEngineReady] = useState(false)
   const engineFirstMoveRequested = useRef(false)
   const openingTreeRef = useRef<OpeningTree | null>(null)
@@ -53,10 +57,28 @@ export function GameView() {
         setEngineReady(true)
       })
       .catch(console.error)
-  }, [engineElo])
+  }, [])
+
+  useEffect(() => {
+    if (engineReady) getStockfish().setElo(engineElo)
+  }, [engineElo, engineReady])
+
+  // Set openingNode at game start for White openings (player moves first)
+  useEffect(() => {
+    if (!openingId || !openingTreeRef.current) return
+    const opening = openings.find((o) => o.id === openingId)
+    if (
+      opening?.rootFen &&
+      fen === opening.rootFen &&
+      history.length === 0 &&
+      phase === 'opening'
+    ) {
+      const rootNode = openingTreeRef.current.getRootNode()
+      if (rootNode) setOpeningNode(rootNode)
+    }
+  }, [openingId, fen, history.length, phase, setOpeningNode])
 
   // When player is black, engine (white) moves first
-  const history = useGameStore((s) => s.history)
   useEffect(() => {
     if (history.length === 0) {
       engineFirstMoveRequested.current = false
@@ -94,6 +116,7 @@ export function GameView() {
           setOpeningNode(child)
           setCommentary(child?.commentary ?? '')
         }
+        setEngineThinking(false)
       } else {
         getStockfish()
           .getMove(fen, 12)
@@ -103,20 +126,24 @@ export function GameView() {
             applyMove({ from, to, promotion: 'q' }, false)
           })
           .catch(console.error)
+          .finally(() => setEngineThinking(false))
       }
-      setEngineThinking(false)
     }
   }, [engineReady, fen, playerColor, applyMove, setEngineThinking, setOpeningNode, setCommentary, phase])
 
   const handleMove = useCallback(
-    async (sourceSquare: string, targetSquare: string) => {
+    async (
+      sourceSquare: string,
+      targetSquare: string,
+      promotion: 'q' | 'r' | 'b' | 'n' = 'q'
+    ) => {
       const tree = openingTreeRef.current
       const fenBeforeMove = useGameStore.getState().fen
       const chessBefore = new Chess(fenBeforeMove)
       const moveResult = chessBefore.move({
         from: sourceSquare,
         to: targetSquare,
-        promotion: 'q',
+        promotion,
       })
       if (!moveResult) return
 
@@ -135,7 +162,7 @@ export function GameView() {
       }
 
       const success = applyMove(
-        { from: sourceSquare, to: targetSquare, promotion: 'q' },
+        { from: sourceSquare, to: targetSquare, promotion },
         inTheory
       )
       if (!success) return
@@ -171,7 +198,7 @@ export function GameView() {
                 {
                   from: engineMove.from as `${string}${number}`,
                   to: engineMove.to as `${string}${number}`,
-                  promotion: 'q',
+                  promotion: (engineMove.promotion as 'q' | 'r' | 'b' | 'n') ?? 'q',
                 },
                 true
               )
@@ -187,7 +214,8 @@ export function GameView() {
             const uciMove = await sf.getMove(fenAfter, 12)
             const from = uciMove.slice(0, 2) as `${string}${number}`
             const to = uciMove.slice(2, 4) as `${string}${number}`
-            applyMove({ from, to, promotion: 'q' }, false)
+            const promo = uciMove.length === 5 ? (uciMove[4] as 'q' | 'r' | 'b' | 'n') : 'q'
+            applyMove({ from, to, promotion: promo }, false)
             setCommentaryLoading(true)
             const { metrics: m, history: h } = useGameStore.getState()
             const lastMoveSan = h[h.length - 1]?.san ?? uciMove
@@ -217,11 +245,36 @@ export function GameView() {
     ]
   )
 
+  // Execute pending move when user clicks a theory suggestion
+  useEffect(() => {
+    if (!pendingMove || !engineReady) return
+    const fenNow = useGameStore.getState().fen
+    const chess = new Chess(fenNow)
+    const result = chess.move(pendingMove)
+    if (result) {
+      setPendingMove(null)
+      handleMove(result.from, result.to)
+    } else {
+      setPendingMove(null)
+    }
+  }, [pendingMove, engineReady, setPendingMove, handleMove])
+
+  // Evaluate position when leaving theory (Fix 6)
+  useEffect(() => {
+    if (phase === 'free' && engineReady) {
+      const fenNow = useGameStore.getState().fen
+      getStockfish()
+        .evaluate(fenNow, 12)
+        .then((cp) => setEvaluation(cp))
+        .catch(() => setEvaluation(null))
+    }
+  }, [phase, engineReady, setEvaluation])
+
   return (
     <div className="flex gap-8 p-6 min-h-screen">
       <CoachPanel />
       <div className="flex flex-col gap-4">
-        <BoardSection onMove={handleMove} />
+        <BoardSection onMove={handleMove} boardFlipped={useGameStore((s) => s.boardFlipped)} />
         <GameControls />
       </div>
     </div>

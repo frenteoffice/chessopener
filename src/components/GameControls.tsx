@@ -3,7 +3,8 @@ import { useGameStore } from '@/store/gameStore'
 const ELO_OPTIONS = [800, 1000, 1200, 1400, 1600, 1800, 2000]
 
 export function GameControls() {
-  const { engineElo, setEngineElo, playerColor, resetGame } = useGameStore()
+  const { engineElo, setEngineElo, playerColor, resetGame, boardFlipped, setBoardFlipped } =
+    useGameStore()
 
   return (
     <div className="flex flex-wrap gap-4 items-center">
@@ -24,6 +25,12 @@ export function GameControls() {
           ))}
         </select>
       </div>
+      <button
+        onClick={() => setBoardFlipped(!boardFlipped)}
+        className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 rounded text-sm text-slate-200 transition-colors"
+      >
+        Flip Board
+      </button>
       <button
         onClick={() => resetGame(playerColor)}
         className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 rounded text-sm text-slate-200 transition-colors"
