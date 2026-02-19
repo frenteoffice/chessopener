@@ -154,5 +154,9 @@
         }
       ]
     }
+  ],
+  "defenses": [
+    {"id":"classical","name":"Classical (Be2)","moves":"Be2","profile":"The Classical variation with Be2.","tree":[{"san":"Be2","fen":"rnbqk2r/ppppppbp/5np1/8/2PP4/2N2N2/PP2PPPP/R1BQKB1R w KQkq - 4 4","commentary":"Be2 develops the bishop.","children":[]}]},
+    {"id":"samisch","name":"Samisch","moves":"f3","profile":"The Samisch variation.","tree":[{"san":"f3","fen":"rnbqk2r/ppppppbp/5np1/8/2PP4/2N2NP1/PP2PP1P/R1BQKB1R b KQkq - 0 4","commentary":"f3 supports the center.","children":[]}]}
   ]
 }

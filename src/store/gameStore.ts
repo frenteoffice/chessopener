@@ -1,9 +1,20 @@
 import { create } from 'zustand'
 import { Chess } from 'chess.js'
-import type { Phase, PlayerColor, Metrics, OpeningNode } from '@/types'
+import type {
+  Phase,
+  PlayerColor,
+  Metrics,
+  OpeningNode,
+  OpponentIntelligenceMode,
+  StructureLabel,
+  OpeningData,
+  DeviationEvent,
+} from '@/types'
 import { computeAllMetrics } from '@/services/MetricsEngine'
 
 const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+
+export const HYBRID_DEVIATION_PROBABILITY = 0.25
 
 function getInitialMetrics(): Metrics {
   const chess = new Chess(INITIAL_FEN)
@@ -33,6 +44,13 @@ interface GameStore {
   pendingMove: string | null
   boardFlipped: boolean
   evaluation: number | null
+  opponentIntelligence: OpponentIntelligenceMode
+  selectedDefenseId: string | null
+  deviationDetected: boolean
+  deviationMove: string | null
+  detectedStructure: StructureLabel | null
+  transpositionOpening: OpeningData | null
+  transpositionPending: boolean
   setFen: (fen: string) => void
   setPhase: (phase: Phase) => void
   setHistory: (history: GameStore['history']) => void
@@ -48,9 +66,27 @@ interface GameStore {
   setPendingMove: (pendingMove: string | null) => void
   setBoardFlipped: (boardFlipped: boolean) => void
   setEvaluation: (evaluation: number | null) => void
+  setOpponentIntelligence: (mode: OpponentIntelligenceMode) => void
+  setSelectedDefense: (defenseId: string | null) => void
+  setDeviationEvent: (event: DeviationEvent) => void
+  acceptTransposition: () => void
+  declineTransposition: () => void
   resetGame: (playerColor?: PlayerColor, openingId?: string | null) => void
   updateMetrics: (metricsUpdater: (prev: Metrics) => Metrics) => void
   applyMove: (move: { from: string; to: string; promotion?: string }, inTheory?: boolean) => boolean
+}
+
+function getStoredOpponentIntelligence(): OpponentIntelligenceMode {
+  const stored = localStorage.getItem('opponentIntelligence')
+  if (stored === 'never-deviate' || stored === 'hybrid' || stored === 'specific-defense') {
+    return stored
+  }
+  return 'never-deviate'
+}
+
+function getStoredDefenseId(): string | null {
+  const stored = localStorage.getItem('opponentDefense')
+  return stored || null
 }
 
 export const useGameStore = create<GameStore>((set) => ({
@@ -70,6 +106,13 @@ export const useGameStore = create<GameStore>((set) => ({
   pendingMove: null,
   boardFlipped: false,
   evaluation: null,
+  opponentIntelligence: getStoredOpponentIntelligence(),
+  selectedDefenseId: getStoredDefenseId(),
+  deviationDetected: false,
+  deviationMove: null,
+  detectedStructure: null,
+  transpositionOpening: null,
+  transpositionPending: false,
 
   setFen: (fen) => set({ fen }),
   setPhase: (phase) => set({ phase }),
@@ -86,6 +129,36 @@ export const useGameStore = create<GameStore>((set) => ({
   setPlayerColor: (playerColor) => set({ playerColor }),
   setEngineElo: (engineElo) => set({ engineElo }),
   setView: (view) => set({ view }),
+
+  setOpponentIntelligence: (mode) => {
+    localStorage.setItem('opponentIntelligence', mode)
+    set({ opponentIntelligence: mode })
+  },
+
+  setSelectedDefense: (defenseId) => {
+    localStorage.setItem('opponentDefense', defenseId ?? '')
+    set({ selectedDefenseId: defenseId })
+  },
+
+  setDeviationEvent: (event) =>
+    set({
+      deviationDetected: true,
+      deviationMove: event.move,
+      detectedStructure: event.structureLabel,
+      transpositionOpening: event.transpositionOpening,
+      transpositionPending: !!event.transpositionOpening,
+    }),
+
+  acceptTransposition: () =>
+    set({
+      transpositionPending: false,
+      transpositionOpening: null,
+    }),
+
+  declineTransposition: () =>
+    set({
+      transpositionPending: false,
+    }),
 
   resetGame: (playerColor = 'white', openingId = null) => {
     const chess = new Chess()
@@ -105,6 +178,11 @@ export const useGameStore = create<GameStore>((set) => ({
       pendingMove: null,
       boardFlipped: false,
       evaluation: null,
+      deviationDetected: false,
+      deviationMove: null,
+      detectedStructure: null,
+      transpositionOpening: null,
+      transpositionPending: false,
     })
   },
 

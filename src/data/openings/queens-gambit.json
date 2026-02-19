@@ -173,5 +173,9 @@
         }
       ]
     }
+  ],
+  "defenses": [
+    {"id":"qgd","name":"Queen's Gambit Declined","moves":"2...e6","profile":"The QGD is the most classical response to the Queen's Gambit.","tree":[{"san":"e6","fen":"rnbqkbnr/ppp2ppp/4p3/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3","commentary":"e6 supports the center.","children":[]}]},
+    {"id":"slav","name":"Slav Defense","moves":"2...c6","profile":"The Slav Defense maintains the pawn on d5.","tree":[{"san":"c6","fen":"rnbqkbnr/pp2pppp/2p5/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3","commentary":"c6 supports d5.","children":[]}]}
   ]
 }

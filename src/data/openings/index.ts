@@ -8,7 +8,7 @@ import caroKann from './caro-kann.json'
 import frenchDefense from './french-defense.json'
 import pircDefense from './pirc-defense.json'
 import scandinavian from './scandinavian.json'
-import type { OpeningData } from '@/services/OpeningTree'
+import type { OpeningData } from '@/types'
 
 export const openings: OpeningData[] = [
   italianGame as OpeningData,

@@ -1,26 +1,18 @@
-import type { OpeningNode } from '@/types'
+import type { OpeningNode, OpeningData, DefenseNode } from '@/types'
 
-export interface OpeningData {
-  id: string
-  name: string
-  eco: string
-  color: 'white' | 'black'
-  difficulty: string
-  description: string
-  rootFen?: string
-  rootResponses?: string[]
-  rootWeights?: number[]
-  moves: OpeningNode[]
-}
+export type { OpeningData }
 
 export class OpeningTree {
+  private data: OpeningData
   private root: OpeningNode[]
   private fenIndex: Record<string, OpeningNode> = {}
+  private defenseIndex: Map<string, DefenseNode> = new Map()
   private rootFen?: string
   private rootResponses: string[] = []
   private rootWeights: number[] = []
 
   constructor(openingData: OpeningData) {
+    this.data = openingData
     this.root = openingData.moves
     this.rootFen = openingData.rootFen
     this.rootResponses = openingData.rootResponses ?? []
@@ -82,5 +74,52 @@ export class OpeningTree {
       responseWeights: this.rootWeights,
       children: this.root,
     }
+  }
+
+  /**
+   * Loads a defense sub-tree into a separate internal FEN index.
+   * Call once before game start when mode === 'specific-defense'.
+   */
+  loadDefense(defenseId: string): void {
+    this.defenseIndex.clear()
+    const defenses = (this.data.defenses ?? [])
+    const defense = defenses.find((d) => d.id === defenseId)
+    if (!defense) {
+      console.warn(`[OpeningTree] Unknown defenseId: ${defenseId}`)
+      return
+    }
+    for (const node of defense.tree) {
+      this.indexDefenseNode(node)
+    }
+  }
+
+  private indexDefenseNode(node: DefenseNode): void {
+    this.defenseIndex.set(node.fen, node)
+    for (const child of node.children ?? []) {
+      this.indexDefenseNode(child)
+    }
+  }
+
+  /**
+   * Looks up the current position in the loaded defense tree.
+   * Returns null if no defense is loaded or position is off-defense.
+   */
+  getDefenseNode(fen: string): DefenseNode | null {
+    return this.defenseIndex.get(fen) ?? null
+  }
+
+  /**
+   * Searches all provided opening data objects for a FEN match.
+   * Returns the first Opening whose tree contains the given FEN, or null.
+   */
+  findTransposition(fen: string, allOpenings: OpeningData[]): OpeningData | null {
+    if (allOpenings.length === 0) return null
+    const startFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+    if (fen === startFen) return null
+    for (const opening of allOpenings) {
+      const tempTree = new OpeningTree(opening)
+      if (tempTree.getNode(fen)) return opening
+    }
+    return null
   }
 }

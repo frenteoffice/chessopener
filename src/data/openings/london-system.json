@@ -153,5 +153,9 @@
         }
       ]
     }
+  ],
+  "defenses": [
+    {"id":"kings-indian-setup","name":"King's Indian Setup","moves":"...g6","profile":"Black adopts a King's Indian style setup against the London.","tree":[{"san":"g6","fen":"rnbqkbnr/pppppp1p/6p1/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2","commentary":"g6 prepares the fianchetto.","children":[]}]},
+    {"id":"dutch-setup","name":"Dutch Setup","moves":"...f5","profile":"The Dutch setup challenges the center with f5.","tree":[{"san":"f5","fen":"rnbqkbnr/ppppp1pp/8/5p2/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2","commentary":"f5 stakes a claim.","children":[]}]}
   ]
 }

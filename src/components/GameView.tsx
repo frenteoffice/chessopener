@@ -7,6 +7,8 @@ import { useGameStore } from '@/store/gameStore'
 import { StockfishBridge } from '@/services/StockfishBridge'
 import { OpeningTree } from '@/services/OpeningTree'
 import { CommentaryService } from '@/services/CommentaryService'
+import { getEngineMove } from '@/services/EngineMoveSelector'
+import { classifyStructure } from '@/services/MetricsEngine'
 import { openings } from '@/data/openings'
 
 const commentaryService = new CommentaryService()
@@ -33,7 +35,10 @@ export function GameView() {
     setOpeningNode,
     setPendingMove,
     setEvaluation,
+    setDeviationEvent,
     engineElo,
+    opponentIntelligence,
+    selectedDefenseId,
   } = useGameStore()
   const pendingMove = useGameStore((s) => s.pendingMove)
   const history = useGameStore((s) => s.history)
@@ -41,6 +46,7 @@ export function GameView() {
   const engineFirstMoveRequested = useRef(false)
   const openingTreeRef = useRef<OpeningTree | null>(null)
   const loadedOpeningIdRef = useRef<string | null>(null)
+  const defenseNodeRef = useRef<ReturnType<OpeningTree['getDefenseNode']>>(null)
 
   const openingId = useGameStore((s) => s.openingId)
   // Build the tree synchronously during render so it's available on the first move
@@ -66,9 +72,10 @@ export function GameView() {
     if (engineReady) getStockfish().setElo(engineElo)
   }, [engineElo, engineReady])
 
-  // Set openingNode at game start for White openings (player moves first)
+  // Set openingNode at game start; load defense when in specific-defense mode
   useEffect(() => {
     if (!openingId || !openingTreeRef.current) return
+    const tree = openingTreeRef.current
     const opening = openings.find((o) => o.id === openingId)
     if (
       opening?.rootFen &&
@@ -76,10 +83,28 @@ export function GameView() {
       history.length === 0 &&
       phase === 'opening'
     ) {
-      const rootNode = openingTreeRef.current.getRootNode()
+      const rootNode = tree.getRootNode()
       if (rootNode) setOpeningNode(rootNode)
+      if (opponentIntelligence === 'specific-defense' && selectedDefenseId) {
+        tree.loadDefense(selectedDefenseId)
+        defenseNodeRef.current = tree.getDefenseNode(fen)
+      } else {
+        defenseNodeRef.current = null
+      }
     }
-  }, [openingId, fen, history.length, phase, setOpeningNode])
+  }, [openingId, fen, history.length, phase, setOpeningNode, opponentIntelligence, selectedDefenseId])
+
+  // When switching opening via transposition accept, sync openingNode from new tree
+  const prevOpeningIdRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (!openingId || !openingTreeRef.current) return
+    if (prevOpeningIdRef.current !== openingId && history.length > 0) {
+      prevOpeningIdRef.current = openingId
+      const currentFen = useGameStore.getState().fen
+      const node = openingTreeRef.current.getNode(currentFen)
+      setOpeningNode(node)
+    }
+  }, [openingId, history.length, setOpeningNode])
 
   // When player is black, engine (white) moves first
   useEffect(() => {
@@ -101,38 +126,65 @@ export function GameView() {
       engineFirstMoveRequested.current = true
       setEngineThinking(true)
       const tree = openingTreeRef.current
-      const node = tree?.getNode(fen)
-      if (tree && node && phase === 'opening') {
-        const moveSan = tree.sampleResponse(node)
-        const gameChess = new Chess(fen)
-        const engineMove = gameChess.move(moveSan)
-        if (engineMove) {
-          applyMove(
-            {
-              from: engineMove.from as `${string}${number}`,
-              to: engineMove.to as `${string}${number}`,
-              promotion: 'q',
-            },
-            true
-          )
-          const child = tree.getChild(node, moveSan)
-          setOpeningNode(child)
-          setCommentary(child?.commentary ?? '')
-        }
-        setEngineThinking(false)
-      } else {
-        getStockfish()
-          .getMove(fen, 12)
-          .then((uciMove) => {
-            const from = uciMove.slice(0, 2) as `${string}${number}`
-            const to = uciMove.slice(2, 4) as `${string}${number}`
+      const openingNode = tree?.getNode(fen) ?? null
+      const defenseNode = tree?.getDefenseNode(fen) ?? null
+      getEngineMove({
+        mode: opponentIntelligence,
+        openingNode,
+        defenseNode,
+        fen,
+        tree,
+        stockfish: getStockfish(),
+        engineElo,
+      })
+        .then((result) => {
+          if (result.san) {
+            const gameChess = new Chess(fen)
+            const engineMove = gameChess.move(result.san)
+            if (engineMove) {
+              applyMove(
+                {
+                  from: engineMove.from as `${string}${number}`,
+                  to: engineMove.to as `${string}${number}`,
+                  promotion: 'q',
+                },
+                true
+              )
+              const newFen = useGameStore.getState().fen
+              if (openingNode && tree) {
+                const child = tree.getChild(openingNode, result.san)
+                setOpeningNode(child ?? null)
+                setCommentary(child?.commentary ?? '')
+              } else if (defenseNode && tree) {
+                const child = defenseNode.children?.find((c) => c.san === result.san)
+                defenseNodeRef.current = tree.getDefenseNode(newFen)
+                setCommentary(child?.commentary ?? defenseNode.commentary ?? '')
+              }
+            }
+          } else if (result.uciMove) {
+            const from = result.uciMove.slice(0, 2) as `${string}${number}`
+            const to = result.uciMove.slice(2, 4) as `${string}${number}`
             applyMove({ from, to, promotion: 'q' }, false)
-          })
-          .catch(console.error)
-          .finally(() => setEngineThinking(false))
-      }
+            setPhase('free')
+            setOpeningNode(null)
+            defenseNodeRef.current = tree?.getDefenseNode(useGameStore.getState().fen) ?? null
+          }
+        })
+        .catch(console.error)
+        .finally(() => setEngineThinking(false))
     }
-  }, [engineReady, fen, playerColor, applyMove, setEngineThinking, setOpeningNode, setCommentary, phase])
+  }, [
+    engineReady,
+    fen,
+    playerColor,
+    applyMove,
+    setEngineThinking,
+    setOpeningNode,
+    setCommentary,
+    phase,
+    opponentIntelligence,
+    engineElo,
+  ])
 
   const handleMove = useCallback(
     async (
@@ -189,14 +241,23 @@ export function GameView() {
 
       if (isEngineTurn && engineReady) {
         setEngineThinking(true)
+        defenseNodeRef.current = tree?.getDefenseNode(fenAfter) ?? null
         try {
-          const currentPhase = useGameStore.getState().phase
-          const currentNode = tree?.getNode(fenAfter)
+          const openingNode = tree?.getNode(fenAfter) ?? null
+          const defenseNode = defenseNodeRef.current
+          const result = await getEngineMove({
+            mode: opponentIntelligence,
+            openingNode,
+            defenseNode,
+            fen: fenAfter,
+            tree: tree ?? null,
+            stockfish: getStockfish(),
+            engineElo,
+          })
 
-          if (currentPhase === 'opening' && currentNode && tree) {
-            const moveSan = tree.sampleResponse(currentNode)
+          if (result.san) {
             const chess = new Chess(fenAfter)
-            const engineMove = chess.move(moveSan)
+            const engineMove = chess.move(result.san)
             if (engineMove) {
               applyMove(
                 {
@@ -206,25 +267,47 @@ export function GameView() {
                 },
                 true
               )
-              const child = tree!.getChild(currentNode, moveSan)
-              setOpeningNode(child)
-              setCommentary(child?.commentary ?? '')
+              const newFen = useGameStore.getState().fen
+              if (openingNode && tree) {
+                const child = tree.getChild(openingNode, result.san)
+                setOpeningNode(child ?? null)
+                setCommentary(child?.commentary ?? '')
+              } else if (defenseNode && tree) {
+                const child = defenseNode.children?.find((c) => c.san === result.san)
+                defenseNodeRef.current = tree.getDefenseNode(newFen)
+                setCommentary(child?.commentary ?? defenseNode.commentary ?? '')
+              }
             }
-          } else {
+          } else if (result.uciMove) {
+            const from = result.uciMove.slice(0, 2) as `${string}${number}`
+            const to = result.uciMove.slice(2, 4) as `${string}${number}`
+            const promo = result.uciMove.length === 5 ? (result.uciMove[4] as 'q' | 'r' | 'b' | 'n') : 'q'
+            const chessForMove = new Chess(fenAfter)
+            const engineMoveObj = chessForMove.move({ from, to, promotion: promo })
+            const moveSan = engineMoveObj?.san ?? result.uciMove
+            applyMove({ from, to, promotion: promo }, false)
             setPhase('free')
             setOpeningNode(null)
-            const sf = getStockfish()
-            await sf.setElo(engineElo)
-            const uciMove = await sf.getMove(fenAfter, 12)
-            const from = uciMove.slice(0, 2) as `${string}${number}`
-            const to = uciMove.slice(2, 4) as `${string}${number}`
-            const promo = uciMove.length === 5 ? (uciMove[4] as 'q' | 'r' | 'b' | 'n') : 'q'
-            applyMove({ from, to, promotion: promo }, false)
+            const newFen = useGameStore.getState().fen
+            if (result.isDeviation && tree) {
+              const transposition = tree.findTransposition(newFen, openings)
+              const chessForStruct = new Chess(newFen)
+              const structureLabel = classifyStructure(chessForStruct)
+              setDeviationEvent({
+                move: moveSan,
+                fen: newFen,
+                structureLabel,
+                transpositionOpening: transposition,
+              })
+            }
             setCommentaryLoading(true)
-            const { metrics: m, history: h } = useGameStore.getState()
-            const lastMoveSan = h[h.length - 1]?.san ?? uciMove
+            const { metrics: m, history: h, detectedStructure } = useGameStore.getState()
+            const lastMoveSan = h[h.length - 1]?.san ?? moveSan
             commentaryService
-              .generateCommentary(lastMoveSan, m.delta, useGameStore.getState().fen)
+              .generateCommentary(lastMoveSan, m.delta, useGameStore.getState().fen, {
+                structureLabel: detectedStructure ?? undefined,
+                isEngineDeviation: result.isDeviation,
+              })
               .then(setCommentary)
               .catch(() => setCommentary('Commentary unavailable.'))
               .finally(() => setCommentaryLoading(false))
@@ -242,10 +325,11 @@ export function GameView() {
       setEngineThinking,
       setPhase,
       setOpeningNode,
+      setDeviationEvent,
       playerColor,
       engineElo,
       engineReady,
-      phase,
+      opponentIntelligence,
     ]
   )
 

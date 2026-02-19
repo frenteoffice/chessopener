@@ -130,5 +130,9 @@
         }
       ]
     }
+  ],
+  "defenses": [
+    {"id":"main-line","name":"Main Line (Qxd5)","moves":"2...Qxd5","profile":"The Main Line with Qxd5.","tree":[{"san":"Qxd5","fen":"rnb1kbnr/ppp1pppp/8/3q4/8/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3","commentary":"Qxd5 recaptures. The queen is active.","children":[]}]},
+    {"id":"modern","name":"Modern (Nf6)","moves":"2...Nf6","profile":"The Modern with Nf6.","tree":[{"san":"Nf6","fen":"rnbqkb1r/ppp1pppp/5n2/3P4/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2","commentary":"Nf6 develops the knight.","children":[]}]}
   ]
 }

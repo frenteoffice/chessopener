@@ -134,5 +134,9 @@
         }
       ]
     }
+  ],
+  "defenses": [
+    {"id":"classical","name":"Classical","moves":"...dxe4","profile":"The Classical Caro-Kann.","tree":[{"san":"dxe4","fen":"rnbqkbnr/pp2pppp/2p5/8/3Pp3/2N5/PPP2PPP/R1BQKBNR w KQkq - 0 4","commentary":"The Classical - Black takes and will develop.","children":[]}]},
+    {"id":"advance","name":"Advance Variation","moves":"...Bf5","profile":"The Advance Variation.","tree":[{"san":"Bf5","fen":"rnbqkbnr/pp2pppp/2p5/5p2/3P4/2N5/PPP2PPP/R1BQKBNR w KQkq - 0 4","commentary":"Bf5 develops the bishop.","children":[]}]}
   ]
 }

@@ -1,7 +1,23 @@
 import { useGameStore } from '@/store/gameStore'
+import { openings } from '@/data/openings'
 
 export function MoveList() {
-  const { phase, openingNode, history, setPendingMove, engineThinking } = useGameStore()
+  const {
+    phase,
+    openingNode,
+    history,
+    setPendingMove,
+    engineThinking,
+    opponentIntelligence,
+    selectedDefenseId,
+    openingId,
+  } = useGameStore()
+
+  const currentOpening = openingId ? openings.find((o) => o.id === openingId) : null
+  const selectedDefense =
+    opponentIntelligence === 'specific-defense' && selectedDefenseId
+      ? currentOpening?.defenses?.find((d) => d.id === selectedDefenseId)
+      : null
 
   const isPlayerTurn = !engineThinking
 
@@ -21,6 +37,9 @@ export function MoveList() {
           <h3 className="text-slate-300 text-xs font-medium uppercase tracking-wider mb-2">
             Book Moves
           </h3>
+          {selectedDefense && (
+            <div className="text-sm text-gray-400 mb-2">{selectedDefense.name}</div>
+          )}
           {theoryMoves.length > 0 && isPlayerTurn ? (
             <div className="flex flex-wrap gap-2">
               {theoryMoves.map((san) => (

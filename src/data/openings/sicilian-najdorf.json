@@ -145,5 +145,9 @@
         }
       ]
     }
+  ],
+  "defenses": [
+    {"id":"english-attack","name":"English Attack","moves":"Be3","profile":"The English Attack targets the kingside.","tree":[{"san":"Be3","fen":"rnbqk2r/pp2ppbp/3p1np1/8/3NP3/2N1B3/PPP2PPP/R2QKB1R w KQkq - 0 6","commentary":"Be3 develops.","children":[]}]},
+    {"id":"classical","name":"Classical (Be2)","moves":"Be2","profile":"The Classical variation.","tree":[{"san":"Be2","fen":"rnbqk2r/pp2ppbp/3p1np1/8/3NP3/2N5/PPP1BPPP/R1BQK2R w KQkq - 0 6","commentary":"Be2 develops.","children":[]}]}
   ]
 }

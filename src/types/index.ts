@@ -39,3 +39,57 @@ export interface OpeningNode {
   responseWeights: number[]
   children?: OpeningNode[]
 }
+
+export type OpponentIntelligenceMode = 'never-deviate' | 'hybrid' | 'specific-defense'
+
+export type StructureLabel =
+  | 'open-center'
+  | 'closed-center'
+  | 'isolated-queens-pawn'
+  | 'hanging-pawns'
+  | 'caro-kann-structure'
+  | 'slav-structure'
+  | 'french-structure'
+  | 'kings-indian-structure'
+  | 'london-structure'
+  | 'sicilian-structure'
+  | 'unknown'
+
+export interface DefenseNode {
+  san: string
+  fen: string
+  commentary: string
+  playerResponseHint?: string
+  engineResponses?: string[]
+  responseWeights?: number[]
+  children?: DefenseNode[]
+}
+
+export interface Defense {
+  id: string
+  name: string
+  moves: string
+  profile: string
+  tree: DefenseNode[]
+}
+
+export interface OpeningData {
+  id: string
+  name: string
+  eco: string
+  color: 'white' | 'black'
+  difficulty: string
+  description: string
+  rootFen?: string
+  rootResponses?: string[]
+  rootWeights?: number[]
+  moves: OpeningNode[]
+  defenses?: Defense[]
+}
+
+export interface DeviationEvent {
+  move: string
+  fen: string
+  structureLabel: StructureLabel
+  transpositionOpening: OpeningData | null
+}

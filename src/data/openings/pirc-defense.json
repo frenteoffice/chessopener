@@ -128,5 +128,9 @@
         }
       ]
     }
+  ],
+  "defenses": [
+    {"id":"classical","name":"Classical","moves":"...Nf6","profile":"The Classical Pirc.","tree":[{"san":"Nf6","fen":"rnbqkb1r/pppppppp/5n2/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 2 2","commentary":"Nf6 develops.","children":[]}]},
+    {"id":"austrian","name":"Austrian Attack","moves":"f4","profile":"The Austrian Attack.","tree":[{"san":"f4","fen":"rnbqk2r/ppppppbp/5np1/8/4PP2/2N2N2/PPPP2PP/R1BQKB1R b KQkq - 0 4","commentary":"f4 expands on the kingside.","children":[]}]}
   ]
 }

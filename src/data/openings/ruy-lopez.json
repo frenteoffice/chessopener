@@ -212,5 +212,9 @@
         }
       ]
     }
+  ],
+  "defenses": [
+    {"id":"berlin","name":"Berlin Defense","moves":"3...Nf6","profile":"The Berlin Defense is a solid response that avoids the main Ruy Lopez theory.","tree":[{"san":"Nf6","fen":"r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4","commentary":"Nf6 develops the knight.","children":[]}]},
+    {"id":"marshall","name":"Marshall Attack","moves":"8...d5","profile":"The Marshall Attack is a sharp counterattacking system.","tree":[{"san":"d5","fen":"r1bq1rk1/ppp2ppp/2n2n2/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQ1RK1 w - - 0 9","commentary":"d5 breaks in the center.","children":[]}]}
   ]
 }

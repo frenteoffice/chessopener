@@ -21,18 +21,25 @@ export class CommentaryService {
   async generateCommentary(
     moveSan: string,
     delta: MetricsDelta,
-    fen: string
+    fen: string,
+    options?: { structureLabel?: string; isEngineDeviation?: boolean }
   ): Promise<string> {
     if (!COMMENTARY_ENABLED) {
       return ''
     }
 
-    const prompt = `
+    let context = `
 A chess player just played ${moveSan}.
 Piece activity changed by ${delta.pieceActivity}.
 Center control changed by ${delta.centerControl}.
 King safety changed by ${delta.kingSafety}.
 Current FEN: ${fen}
+`
+    if (options?.isEngineDeviation && options?.structureLabel && options.structureLabel !== 'unknown') {
+      context += `\n\nThe engine deviated from the opening book with this move. The resulting pawn structure is: ${options.structureLabel}.`
+    }
+
+    const prompt = `${context}
 
 Write 2-3 sentences explaining the positional idea behind this move,
 referencing the metric changes. Use simple language suitable for a

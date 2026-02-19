@@ -136,5 +136,9 @@
         }
       ]
     }
+  ],
+  "defenses": [
+    {"id":"advance","name":"Advance Variation","moves":"...d5","profile":"The Advance Variation.","tree":[{"san":"d5","fen":"rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3","commentary":"d5 challenges the center.","children":[]}]},
+    {"id":"tarrasch","name":"Tarrasch","moves":"...Nf6","profile":"The Tarrasch variation.","tree":[{"san":"Nf6","fen":"rnbqkb1r/pppp1ppp/4pn2/8/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 2 3","commentary":"Nf6 develops.","children":[]}]}
   ]
 }

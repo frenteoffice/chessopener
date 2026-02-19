@@ -423,3 +423,150 @@ Additionally, several files had wrong piece positions in deeper nodes (King's In
 | `scripts/verify-fens.mjs` | Added verification script to validate FENs match chess.js output |
 
 ---
+
+## 2026-02-18 — Opponent Intelligence Feature (TDD Implementation)
+
+Full implementation of the Opponent Intelligence feature per `docs/OpeningIQ_OpponentIntelligence_TDD.md`. Introduces three engine modes that govern how the opponent behaves relative to opening theory.
+
+---
+
+### Overview
+
+**Three modes:**
+- **Never Deviate** — Engine strictly constrained to the opening tree; never plays Stockfish except at leaf nodes (fallback to full-strength Stockfish).
+- **Hybrid** — Follows theory ~75% of the time; deviates to Stockfish ~25%; app names the resulting structure and offers transposition detection.
+- **Specific Defense** — Commits to one pre-authored defense tree chosen by the player before the game.
+
+---
+
+### Phase 1 — Store & UI Shell
+
+**Types** (`src/types/index.ts`):
+- `OpponentIntelligenceMode`: `'never-deviate' | 'hybrid' | 'specific-defense'`
+- `StructureLabel`: pawn structure archetypes (`open-center`, `closed-center`, `caro-kann-structure`, etc.)
+- `DefenseNode`, `Defense`, `OpeningData`, `DeviationEvent` interfaces
+- Moved `OpeningData` from `OpeningTree.ts` to types to avoid circular imports
+
+**Store** (`src/store/gameStore.ts`):
+- New fields: `opponentIntelligence`, `selectedDefenseId`, `deviationDetected`, `deviationMove`, `detectedStructure`, `transpositionOpening`, `transpositionPending`
+- New actions: `setOpponentIntelligence`, `setSelectedDefense`, `setDeviationEvent`, `acceptTransposition`, `declineTransposition`
+- localStorage persistence for `opponentIntelligence` and `selectedDefenseId`
+- `resetGame()` clears deviation state but preserves mode/defense settings
+- `HYBRID_DEVIATION_PROBABILITY = 0.25` exported for engine logic
+
+**GameControls** (`src/components/GameControls.tsx`):
+- Opponent Intelligence dropdown (Never Deviate, Hybrid, Specific Defense)
+- Defense selector (visible only when Specific Defense; populated from current opening's `defenses`)
+- Both dropdowns disabled after `history.length > 0`
+- Info tooltip (ℹ️) explaining all three modes
+
+**CoachPanel** (`src/components/CoachPanel.tsx`):
+- Mode badge (green/purple/amber) in top-right
+
+---
+
+### Phase 2 — Never Deviate Engine Logic
+
+**EngineMoveSelector** (`src/services/EngineMoveSelector.ts`):
+- New service with `getEngineMove(ctx)` — pure async helper for engine move selection
+- Returns `{ san, uciMove, source, isDeviation }` based on mode
+- Never Deviate: tree move when `openingNode` exists; Stockfish at depth 15 (ELO limit disabled) at leaf nodes
+
+**OpeningTree** (`src/services/OpeningTree.ts`):
+- `loadDefense(defenseId)` — loads defense sub-tree into `defenseIndex`
+- `getDefenseNode(fen)` — O(1) lookup in loaded defense tree
+- `defenseIndex: Map<string, DefenseNode>` for defense FEN indexing
+
+**GameView** (`src/components/GameView.tsx`):
+- Replaced inline engine logic with `getEngineMove()` calls
+- Added `defenseNodeRef` for defense tracking
+- Engine first-move and post-player-move paths both use `getEngineMove()`
+
+---
+
+### Phase 3 — Specific Defense Data Authoring
+
+**Opening JSON files** (all 10):
+- Added `defenses` array to each opening
+- Each defense: `id`, `name`, `moves`, `profile`, `tree` (DefenseNode[])
+- Italian Game: Giuoco Piano, Two Knights Defense, Hungarian Defense
+- Ruy Lopez: Berlin Defense, Marshall Attack
+- London System: King's Indian Setup, Dutch Setup
+- Queen's Gambit: QGD, Slav Defense
+- King's Indian: Classical (Be2), Samisch
+- Sicilian Najdorf: English Attack, Classical (Be2)
+- Caro-Kann: Classical, Advance Variation
+- French Defense: Advance Variation, Tarrasch
+- Pirc Defense: Classical, Austrian Attack
+- Scandinavian: Main Line (Qxd5), Modern (Nf6)
+
+---
+
+### Phase 4 — Specific Defense Engine Logic
+
+**OpeningTree**:
+- `loadDefense()` indexes defense tree recursively via `indexDefenseNode()`
+- `getDefenseNode()` returns node or null
+- Defense nodes converted to `OpeningNode` shape for `sampleResponse()` (children → engineResponses)
+
+**EngineMoveSelector**:
+- Specific Defense branch: uses `defenseNode` when present; Stockfish fallback when off-defense
+
+**GameView**:
+- Loads defense at game start when `opponentIntelligence === 'specific-defense'` and `selectedDefenseId` set
+- Updates `defenseNodeRef` after each move
+
+---
+
+### Phase 5 — Hybrid Detection
+
+**OpeningTree**:
+- `findTransposition(fen, allOpenings)` — searches all openings for FEN match; returns first hit or null
+
+**MetricsEngine** (`src/services/MetricsEngine.ts`):
+- `classifyStructure(chess)` — returns `StructureLabel` based on pawn positions (Caro-Kann, French, Slav, Sicilian, King's Indian, London, isolated/hanging pawns, open/closed center)
+
+**GameView**:
+- When `getEngineMove()` returns `isDeviation: true`: runs findTransposition, classifyStructure, `setDeviationEvent()`
+- Deviation event includes `move`, `fen`, `structureLabel`, `transpositionOpening`
+
+**CommentaryService** (`src/services/CommentaryService.ts`):
+- `generateCommentary()` accepts optional `{ structureLabel, isEngineDeviation }` for enhanced deviation prompts
+
+---
+
+### Phase 6 — UI Components
+
+**CoachPanel**:
+- **Defense Profile card** — shown at game start in Specific Defense mode; displays defense `profile`; dismissible
+- **Deviation coaching card** — shown when `deviationDetected`; displays deviating move, structure context (if not `unknown`), suggested plan
+- **Transposition offer card** — shown when `transpositionPending`; "Yes, switch context" / "No, keep current framing"; accept loads new opening via `setOpeningId()`
+
+**MoveList** (`src/components/MoveList.tsx`):
+- Defense name subtitle below "Book Moves" when in Specific Defense mode
+
+**GameView**:
+- `useEffect` to sync `openingNode` when switching opening via transposition accept (mid-game)
+
+---
+
+### Files Changed
+
+| File | Change |
+|---|---|
+| `src/types/index.ts` | New types: OpponentIntelligenceMode, StructureLabel, DefenseNode, Defense, OpeningData, DeviationEvent |
+| `src/store/gameStore.ts` | Opponent intelligence state, actions, localStorage, resetGame updates |
+| `src/services/OpeningTree.ts` | loadDefense, getDefenseNode, findTransposition; OpeningData moved to types |
+| `src/services/MetricsEngine.ts` | classifyStructure() |
+| `src/services/EngineMoveSelector.ts` | New file — getEngineMove() |
+| `src/services/CommentaryService.ts` | generateCommentary() options for deviation context |
+| `src/components/GameView.tsx` | getEngineMove integration, deviation detection, defense loading |
+| `src/components/GameControls.tsx` | Opponent Intelligence dropdown, Defense selector, tooltip |
+| `src/components/CoachPanel.tsx` | Mode badge, Defense Profile, deviation card, transposition card |
+| `src/components/MoveList.tsx` | Defense name subtitle |
+| `src/data/openings/*.json` | defenses arrays (10 files) |
+| `src/data/openings/index.ts` | OpeningData import from types |
+| `src/components/OpeningSelector.tsx` | OpeningData import from types |
+| `src/__tests__/OpeningTree.test.ts` | OpeningData import from types |
+
+---

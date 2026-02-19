@@ -1,6 +1,6 @@
 import { openings } from '@/data/openings'
 import { useGameStore } from '@/store/gameStore'
-import type { OpeningData } from '@/services/OpeningTree'
+import type { OpeningData } from '@/types'
 
 const whiteOpenings = openings.filter((o) => o.color === 'white')
 const blackOpenings = openings.filter((o) => o.color === 'black')

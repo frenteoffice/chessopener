@@ -1,5 +1,6 @@
 import { Chess } from 'chess.js'
 import type { Chess as ChessType } from 'chess.js'
+import type { StructureLabel } from '@/types'
 
 const CENTER_SQUARES = ['d4', 'd5', 'e4', 'e5']
 
@@ -92,6 +93,76 @@ export function kingSafety(chess: ChessType, color: 'white' | 'black'): number {
     if (!hasOwnPawn) openFilePenalty += 2
   }
   return Math.max(0, 10 - openFilePenalty)
+}
+
+export function classifyStructure(chess: ChessType): StructureLabel {
+  const board = chess.board()
+
+  // Check pawn positions
+  const pawns = { white: [] as { rank: number; file: number }[], black: [] as { rank: number; file: number }[] }
+  for (let r = 0; r < 8; r++) {
+    for (let f = 0; f < 8; f++) {
+      const piece = board[r]?.[f]
+      if (piece?.type === 'p') {
+        if (piece.color === 'w') pawns.white.push({ rank: r, file: f })
+        else pawns.black.push({ rank: r, file: f })
+      }
+    }
+  }
+
+  const hasPawn = (color: 'white' | 'black', file: number) =>
+    (color === 'white' ? pawns.white : pawns.black).some((p) => p.file === file)
+  const pawnFiles = (color: 'white' | 'black') =>
+    (color === 'white' ? pawns.white : pawns.black).map((p) => p.file)
+
+  // Isolated d-pawn
+  const dPawnWhite = pawns.white.find((p) => p.file === 3)
+  const dPawnBlack = pawns.black.find((p) => p.file === 3)
+  if (dPawnWhite && !hasPawn('white', 2) && !hasPawn('white', 4)) return 'isolated-queens-pawn'
+  if (dPawnBlack && !hasPawn('black', 2) && !hasPawn('black', 4)) return 'isolated-queens-pawn'
+
+  // Hanging pawns (c+d or d+e with no support)
+  const hasHanging = (f1: number, f2: number) => {
+    const w = pawnFiles('white')
+    const b = pawnFiles('black')
+    return (
+      (w.includes(f1) && w.includes(f2) && !w.includes(f1 - 1) && !w.includes(f2 + 1)) ||
+      (b.includes(f1) && b.includes(f2) && !b.includes(f1 - 1) && !b.includes(f2 + 1))
+    )
+  }
+  if (hasHanging(2, 3) || hasHanging(3, 4)) return 'hanging-pawns'
+
+  // Caro-Kann: Black c6, d5, e6
+  if (hasPawn('black', 2) && hasPawn('black', 3) && hasPawn('black', 4))
+    return 'caro-kann-structure'
+
+  // Slav: Black c6, d5 (no e6)
+  if (hasPawn('black', 2) && hasPawn('black', 3)) return 'slav-structure'
+
+  // French: Black e6, d5 (no c6)
+  if (hasPawn('black', 4) && hasPawn('black', 3) && !hasPawn('black', 2))
+    return 'french-structure'
+
+  // King's Indian: Black g6, d6, Nf6
+  if (hasPawn('black', 6) && hasPawn('black', 5)) return 'kings-indian-structure'
+
+  // London: White d4, Bf4
+  const hasBf4 =
+    board[4]?.[5]?.type === 'b' && board[4]?.[5]?.color === 'w' && hasPawn('white', 3)
+  if (hasBf4) return 'london-structure'
+
+  // Sicilian: Black c5 vs White d4
+  if (hasPawn('black', 2) && hasPawn('white', 3)) return 'sicilian-structure'
+
+  // Closed center: d4+d5 or e4+e5
+  if (hasPawn('white', 3) && hasPawn('black', 3)) return 'closed-center'
+  if (hasPawn('white', 4) && hasPawn('black', 4)) return 'closed-center'
+
+  // Open center
+  if (!hasPawn('white', 3) && !hasPawn('black', 3) && !hasPawn('white', 4) && !hasPawn('black', 4))
+    return 'open-center'
+
+  return 'unknown'
 }
 
 export function computeAllMetrics(chess: ChessType) {

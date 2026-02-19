@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { OpeningTree } from '@/services/OpeningTree'
 import italianGame from '@/data/openings/italian-game.json'
-import type { OpeningData } from '@/services/OpeningTree'
+import type { OpeningData } from '@/types'
 
 const tree = new OpeningTree(italianGame as OpeningData)
 
