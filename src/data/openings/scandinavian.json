@@ -5,65 +5,115 @@
   "color": "black",
   "difficulty": "beginner",
   "description": "An immediate challenge to e4 with d5. Direct and easy to understand.",
-  "rootFen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
-  "rootResponses": ["d5"],
-  "rootWeights": [1],
+  "rootFen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+  "rootResponses": [
+    "d5"
+  ],
+  "rootWeights": [
+    1
+  ],
   "moves": [
     {
       "san": "d5",
-      "fen": "rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 2",
+      "fen": "rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
       "commentary": "The Scandinavian - an immediate strike at White's center.",
-      "engineResponses": ["exd5", "Nc3", "d3"],
-      "responseWeights": [0.85, 0.1, 0.05],
+      "engineResponses": [
+        "exd5",
+        "Nc3",
+        "d3"
+      ],
+      "responseWeights": [
+        0.85,
+        0.1,
+        0.05
+      ],
       "children": [
         {
           "san": "exd5",
           "fen": "rnbqkbnr/ppp1pppp/8/3P4/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2",
           "commentary": "exd5 captures the pawn. Black must decide how to recapture.",
-          "engineResponses": ["Qxd5", "Nf6"],
-          "responseWeights": [0.7, 0.3],
+          "engineResponses": [
+            "Qxd5",
+            "Nf6"
+          ],
+          "responseWeights": [
+            0.7,
+            0.3
+          ],
           "children": [
             {
               "san": "Qxd5",
               "fen": "rnb1kbnr/ppp1pppp/8/3q4/8/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3",
               "commentary": "Qxd5 recaptures. The queen is active but may become a target.",
-              "engineResponses": ["Nc3"],
-              "responseWeights": [1],
+              "engineResponses": [
+                "Nc3"
+              ],
+              "responseWeights": [
+                1
+              ],
               "children": [
                 {
                   "san": "Nc3",
                   "fen": "rnb1kbnr/ppp1pppp/8/3q4/8/2N5/PPPP1PPP/R1BQKBNR b KQkq - 1 3",
                   "commentary": "Nc3 develops with tempo, attacking the queen.",
-                  "engineResponses": ["Qa5", "Qd6", "Qd8"],
-                  "responseWeights": [0.55, 0.35, 0.1],
+                  "engineResponses": [
+                    "Qa5",
+                    "Qd6",
+                    "Qd8"
+                  ],
+                  "responseWeights": [
+                    0.55,
+                    0.35,
+                    0.1
+                  ],
                   "children": [
                     {
                       "san": "Qa5",
                       "fen": "rnb1kbnr/ppp1pppp/8/q7/8/2N5/PPPP1PPP/R1BQKBNR w KQkq - 2 4",
                       "commentary": "Qa5 keeps the queen active and defends the c7 pawn.",
-                      "engineResponses": ["d4"],
-                      "responseWeights": [1],
+                      "engineResponses": [
+                        "d4"
+                      ],
+                      "responseWeights": [
+                        1
+                      ],
                       "children": [
                         {
                           "san": "d4",
-                          "fen": "rnb1kbnr/ppp1pppp/8/q7/3P4/2N5/PPP1PPPP/R1BQKBNR b KQkq d3 0 4",
+                          "fen": "rnb1kbnr/ppp1pppp/8/q7/3P4/2N5/PPP2PPP/R1BQKBNR b KQkq - 0 4",
                           "commentary": "d4 stakes a claim in the center.",
-                          "engineResponses": ["Nf6"],
-                          "responseWeights": [1],
+                          "engineResponses": [
+                            "Nf6"
+                          ],
+                          "responseWeights": [
+                            1
+                          ],
                           "children": [
                             {
                               "san": "Nf6",
-                              "fen": "rnb1kb1r/ppp1pppp/5n2/q7/3P4/2N5/PPP1PPPP/R1BQKBNR w KQkq - 3 5",
+                              "fen": "rnb1kb1r/ppp1pppp/5n2/q7/3P4/2N5/PPP2PPP/R1BQKBNR w KQkq - 1 5",
                               "commentary": "Nf6 develops the knight.",
-                              "engineResponses": ["Nf3", "Bg5"],
-                              "responseWeights": [0.7, 0.3],
+                              "engineResponses": [
+                                "Nf3",
+                                "Bg5"
+                              ],
+                              "responseWeights": [
+                                0.7,
+                                0.3
+                              ],
                               "children": [
                                 {
                                   "san": "Nf3",
-                                  "fen": "rnb1kb1r/ppp1pppp/5n2/q7/3P4/2N2N2/PPP1PPPP/R1BQKB1R b KQkq - 4 5",
+                                  "fen": "rnb1kb1r/ppp1pppp/5n2/q7/3P4/2N2N2/PPP2PPP/R1BQKB1R b KQkq - 2 5",
                                   "commentary": "Nf3 develops and prepares Bf4 or Bg5.",
-                                  "engineResponses": ["Bf5", "Bg4"],
-                                  "responseWeights": [0.6, 0.4],
+                                  "engineResponses": [
+                                    "Bf5",
+                                    "Bg4"
+                                  ],
+                                  "responseWeights": [
+                                    0.6,
+                                    0.4
+                                  ],
                                   "children": []
                                 }
                               ]

@@ -6,78 +6,150 @@
   "difficulty": "intermediate",
   "description": "One of the oldest and most respected openings. White develops the bishop to b5, pinning the knight.",
   "rootFen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-  "rootResponses": ["e4"],
-  "rootWeights": [1],
+  "rootResponses": [
+    "e4"
+  ],
+  "rootWeights": [
+    1
+  ],
   "moves": [
     {
       "san": "e4",
-      "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
+      "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
       "commentary": "Central pawn advance. This move controls the center and opens lines for your queen and bishop.",
-      "engineResponses": ["e5"],
-      "responseWeights": [1],
+      "engineResponses": [
+        "e5"
+      ],
+      "responseWeights": [
+        1
+      ],
       "children": [
         {
           "san": "e5",
-          "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2",
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
           "commentary": "Black mirrors with e5, establishing a classical pawn center.",
-          "engineResponses": ["Nf3"],
-          "responseWeights": [1],
+          "engineResponses": [
+            "Nf3"
+          ],
+          "responseWeights": [
+            1
+          ],
           "children": [
             {
               "san": "Nf3",
               "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2",
               "commentary": "Nf3 develops the knight with tempo, attacking e5 and preparing to castle kingside.",
-              "engineResponses": ["Nc6", "Nf6", "d6"],
-              "responseWeights": [0.6, 0.25, 0.15],
+              "engineResponses": [
+                "Nc6",
+                "Nf6",
+                "d6"
+              ],
+              "responseWeights": [
+                0.6,
+                0.25,
+                0.15
+              ],
               "children": [
                 {
                   "san": "Nc6",
                   "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
                   "commentary": "Nc6 defends e5 and develops. This leads to the Ruy Lopez proper.",
-                  "engineResponses": ["Bb5", "Bc4", "d4"],
-                  "responseWeights": [0.6, 0.25, 0.15],
+                  "engineResponses": [
+                    "Bb5",
+                    "Bc4",
+                    "d4"
+                  ],
+                  "responseWeights": [
+                    0.6,
+                    0.25,
+                    0.15
+                  ],
                   "children": [
                     {
                       "san": "Bb5",
                       "fen": "r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
                       "commentary": "Bb5 pins the knight. This is the defining move of the Ruy Lopez.",
-                      "engineResponses": ["a6", "Nf6", "d6", "Bc5"],
-                      "responseWeights": [0.55, 0.2, 0.1, 0.15],
+                      "engineResponses": [
+                        "a6",
+                        "Nf6",
+                        "d6",
+                        "Bc5"
+                      ],
+                      "responseWeights": [
+                        0.55,
+                        0.2,
+                        0.1,
+                        0.15
+                      ],
                       "children": [
                         {
                           "san": "a6",
                           "fen": "r1bqkbnr/1ppp1ppp/p1n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 4",
                           "commentary": "The Morphy Defense. Black asks the bishop what it wants to do.",
-                          "engineResponses": ["Ba4", "Bxc6"],
-                          "responseWeights": [0.9, 0.1],
+                          "engineResponses": [
+                            "Ba4",
+                            "Bxc6"
+                          ],
+                          "responseWeights": [
+                            0.9,
+                            0.1
+                          ],
                           "children": [
                             {
                               "san": "Ba4",
                               "fen": "r1bqkbnr/1ppp1ppp/p1n5/4p3/B3P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 1 4",
                               "commentary": "Ba4 keeps the bishop active while retreating from the pawn.",
-                              "engineResponses": ["Nf6", "d6", "Be7"],
-                              "responseWeights": [0.6, 0.25, 0.15],
+                              "engineResponses": [
+                                "Nf6",
+                                "d6",
+                                "Be7"
+                              ],
+                              "responseWeights": [
+                                0.6,
+                                0.25,
+                                0.15
+                              ],
                               "children": [
                                 {
                                   "san": "Nf6",
                                   "fen": "r1bqkb1r/1ppp1ppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 5",
                                   "commentary": "Nf6 develops and prepares to castle.",
-                                  "engineResponses": ["O-O", "d3", "d4"],
-                                  "responseWeights": [0.6, 0.25, 0.15],
+                                  "engineResponses": [
+                                    "O-O",
+                                    "d3",
+                                    "d4"
+                                  ],
+                                  "responseWeights": [
+                                    0.6,
+                                    0.25,
+                                    0.15
+                                  ],
                                   "children": [
                                     {
                                       "san": "O-O",
                                       "fen": "r1bqkb1r/1ppp1ppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQ1RK1 b kq - 3 5",
                                       "commentary": "Castling kingside brings the king to safety and connects the rooks.",
-                                      "engineResponses": ["Be7", "d6"],
-                                      "responseWeights": [0.7, 0.3],
+                                      "engineResponses": [
+                                        "Be7",
+                                        "d6"
+                                      ],
+                                      "responseWeights": [
+                                        0.7,
+                                        0.3
+                                      ],
                                       "children": [
                                         {
                                           "san": "Be7",
                                           "fen": "r1bqk2r/1pppbppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQ1RK1 w kq - 4 6",
                                           "commentary": "Be7 completes development. The mainline Ruy Lopez position.",
-                                          "engineResponses": ["Re1", "d3"],
-                                          "responseWeights": [0.6, 0.4],
+                                          "engineResponses": [
+                                            "Re1",
+                                            "d3"
+                                          ],
+                                          "responseWeights": [
+                                            0.6,
+                                            0.4
+                                          ],
                                           "children": []
                                         }
                                       ]
@@ -92,24 +164,42 @@
                           "san": "Nf6",
                           "fen": "r1bqkb1r/pppp1ppp/2n2n2/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
                           "commentary": "The Berlin Defense. Black develops the knight instead of playing a6.",
-                          "engineResponses": ["O-O", "Nc3"],
-                          "responseWeights": [0.7, 0.3],
+                          "engineResponses": [
+                            "O-O",
+                            "Nc3"
+                          ],
+                          "responseWeights": [
+                            0.7,
+                            0.3
+                          ],
                           "children": []
                         },
                         {
                           "san": "d6",
                           "fen": "r1bqkbnr/ppp2ppp/2np4/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 4",
                           "commentary": "The Steinitz Defense. Black supports e5 with the pawn.",
-                          "engineResponses": ["d4", "O-O"],
-                          "responseWeights": [0.6, 0.4],
+                          "engineResponses": [
+                            "d4",
+                            "O-O"
+                          ],
+                          "responseWeights": [
+                            0.6,
+                            0.4
+                          ],
                           "children": []
                         },
                         {
                           "san": "Bc5",
-                          "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/1B2P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+                          "fen": "r1bqk1nr/pppp1ppp/2n5/1Bb1p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
                           "commentary": "The Classical Defense. Black develops the bishop to an active square.",
-                          "engineResponses": ["c3", "Nxe5"],
-                          "responseWeights": [0.7, 0.3],
+                          "engineResponses": [
+                            "c3",
+                            "Nxe5"
+                          ],
+                          "responseWeights": [
+                            0.7,
+                            0.3
+                          ],
                           "children": []
                         }
                       ]

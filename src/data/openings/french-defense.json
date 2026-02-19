@@ -5,65 +5,121 @@
   "color": "black",
   "difficulty": "beginner",
   "description": "A solid defense with e6. Black challenges the center with d5.",
-  "rootFen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
-  "rootResponses": ["e6"],
-  "rootWeights": [1],
+  "rootFen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+  "rootResponses": [
+    "e6"
+  ],
+  "rootWeights": [
+    1
+  ],
   "moves": [
     {
       "san": "e6",
       "fen": "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
       "commentary": "The French Defense - a solid choice that prepares d5.",
-      "engineResponses": ["d4", "Nc3", "Nf3"],
-      "responseWeights": [0.75, 0.15, 0.1],
+      "engineResponses": [
+        "d4",
+        "Nc3",
+        "Nf3"
+      ],
+      "responseWeights": [
+        0.75,
+        0.15,
+        0.1
+      ],
       "children": [
         {
           "san": "d4",
-          "fen": "rnbqkbnr/pppp1ppp/4p3/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq d3 0 2",
+          "fen": "rnbqkbnr/pppp1ppp/4p3/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq - 0 2",
           "commentary": "d4 stakes a claim in the center. The main line against the French.",
-          "engineResponses": ["d5"],
-          "responseWeights": [1],
+          "engineResponses": [
+            "d5"
+          ],
+          "responseWeights": [
+            1
+          ],
           "children": [
             {
               "san": "d5",
-              "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq d6 0 3",
+              "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3",
               "commentary": "d5 challenges the center. The classical French structure.",
-              "engineResponses": ["Nc3", "Nd2", "exd5"],
-              "responseWeights": [0.6, 0.2, 0.2],
+              "engineResponses": [
+                "Nc3",
+                "Nd2",
+                "exd5"
+              ],
+              "responseWeights": [
+                0.6,
+                0.2,
+                0.2
+              ],
               "children": [
                 {
                   "san": "Nc3",
                   "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/2N5/PPP2PPP/R1BQKBNR b KQkq - 1 3",
                   "commentary": "Nc3 develops and supports the center.",
-                  "engineResponses": ["Nf6", "dxe4", "Bb4", "c5"],
-                  "responseWeights": [0.45, 0.2, 0.25, 0.1],
+                  "engineResponses": [
+                    "Nf6",
+                    "dxe4",
+                    "Bb4",
+                    "c5"
+                  ],
+                  "responseWeights": [
+                    0.45,
+                    0.2,
+                    0.25,
+                    0.1
+                  ],
                   "children": [
                     {
                       "san": "Nf6",
                       "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/3PP3/2N5/PPP2PPP/R1BQKBNR w KQkq - 2 4",
                       "commentary": "Nf6 develops and increases pressure on the center.",
-                      "engineResponses": ["Bg5", "e5"],
-                      "responseWeights": [0.7, 0.3],
+                      "engineResponses": [
+                        "Bg5",
+                        "e5"
+                      ],
+                      "responseWeights": [
+                        0.7,
+                        0.3
+                      ],
                       "children": [
                         {
                           "san": "Bg5",
                           "fen": "rnbqkb1r/ppp2ppp/4pn2/3p2B1/3PP3/2N5/PPP2PPP/R2QKBNR b KQkq - 3 4",
                           "commentary": "Bg5 pins the knight and increases pressure.",
-                          "engineResponses": ["Be7"],
-                          "responseWeights": [1],
+                          "engineResponses": [
+                            "Be7"
+                          ],
+                          "responseWeights": [
+                            1
+                          ],
                           "children": [
                             {
                               "san": "Be7",
                               "fen": "rnbqk2r/ppp1bppp/4pn2/3p2B1/3PP3/2N5/PPP2PPP/R2QKBNR w KQkq - 4 5",
                               "commentary": "Be7 breaks the pin and completes development.",
-                              "engineResponses": ["e5", "Bxf6"],
-                              "responseWeights": [0.7, 0.3],
+                              "engineResponses": [
+                                "e5",
+                                "Bxf6"
+                              ],
+                              "responseWeights": [
+                                0.7,
+                                0.3
+                              ],
                               "children": [
                                 {
                                   "san": "e5",
                                   "fen": "rnbqk2r/ppp1bppp/4pn2/3pP1B1/3P4/2N5/PPP2PPP/R2QKBNR b KQkq - 0 5",
                                   "commentary": "e5 gains space and attacks the knight. The Steinitz variation.",
-                                  "engineResponses": ["Nfd7", "dxe4"],
-                                  "responseWeights": [0.7, 0.3],
+                                  "engineResponses": [
+                                    "Nfd7",
+                                    "dxe4"
+                                  ],
+                                  "responseWeights": [
+                                    0.7,
+                                    0.3
+                                  ],
                                   "children": []
                                 }
                               ]

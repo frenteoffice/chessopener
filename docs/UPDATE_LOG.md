@@ -362,3 +362,64 @@ Each node includes correct `fen`, `commentary`, `engineResponses`, `responseWeig
 **Files:** `src/components/BoardSection.tsx`, `src/components/GameView.tsx`
 
 ---
+
+---
+
+## Batch 3 — Bug Fixes (2025-02-18)
+
+All Batch 3 fixes implemented. Summary of changes:
+
+---
+
+### Fix 1 — Board orientation inverted for all openings
+**File:** `src/components/BoardSection.tsx`
+
+**Problem:** The `boardOrientation` ternary had its return values swapped. White openings showed black pieces on the bottom; black openings showed white pieces on the bottom. Players had to press "Flip Board" at the start of every game to get the correct orientation.
+
+**Root cause:** Line 68-69 evaluated `(playerColor === 'white') !== boardFlipped ? 'black' : 'white'` — the `'black'`/`'white'` return values were reversed.
+
+**Fix:** Swap return values to `? 'white' : 'black'`.
+
+---
+
+### Fix 2 — Opening exits to free play after first move (systemic)
+**Files:** `src/data/openings/*.json`, `src/services/OpeningTree.ts`, `src/components/GameView.tsx`
+
+**Problem:** Every opening immediately showed "You've left the book" after the first player move, at a 100% reproduction rate.
+
+**Four compounding root causes identified and fixed:**
+
+**Fix 2a — Wrong FENs in all opening JSON files (primary cause)**
+Every FEN in all 9 opening JSON files included incorrect en passant target squares (e.g. `KQkq e3 0 1`) that chess.js does not produce. Chess.js only sets an en passant target square when an adjacent enemy pawn is present that can actually capture en passant. In early opening positions, this condition is never met, so chess.js outputs `KQkq - 0 1`. The `fenIndex` built from wrong FENs never matched the FENs produced by chess.js during play, so `getNode()` always returned `null`, `inTheory` was always `false`, and `setPhase('free')` fired immediately.
+
+Additionally, several files had wrong piece positions in deeper nodes (King's Indian e4 pawn on wrong square, Caro-Kann piece positions after captures, Scandinavian move counters off).
+
+**Fix:** Regenerated all FENs by replaying every move sequence through chess.js from the root position. All 10 files corrected. Also fixed `rootFen` values for all 6 black openings (Caro-Kann, French, King's Indian, Pirc, Scandinavian, Sicilian Najdorf).
+
+**Fix 2b — `getNode()` synthetic root node missing `children`**
+`OpeningTree.getNode()` returned a synthetic root node for the `rootFen` lookup but did not include the `children` array. When `handleMove` called `getChild(node, san)`, it checked `node.children` first — found `undefined` — and fell through returning `null`. Made `inTheory = false` even when the FENs matched.
+
+**Fix:** Added `children: this.root` to the synthetic node returned by `getNode()` for the `rootFen` case.
+
+**Fix 2c — `OpeningTree` built asynchronously in `useEffect`**
+`openingTreeRef` was populated inside a `useEffect` watching `openingId`. Effects run after the render cycle, so `openingTreeRef.current` was `null` on the first render. If the player moved before the effect fired, `tree` was `null`, `inTheory` defaulted to `false`, and phase jumped to `'free'`.
+
+**Fix:** Replaced the `useEffect` with a synchronous render-time check using a `loadedOpeningIdRef` to track which opening is loaded. The tree is now built during render and is available before any move can be made.
+
+**Fix 2d — Stale `phase` closure in `handleMove`**
+`handleMove` read `phase` from its `useCallback` closure, which could be stale between renders. If the closed-over value was wrong, the `if (tree && phase === 'opening')` guard would fail to enter.
+
+**Fix:** Read `phase` from `useGameStore.getState().phase` at call time inside `handleMove`.
+
+**Files changed:**
+
+| File | Change |
+|---|---|
+| `src/components/BoardSection.tsx` | Swap `'black'`/`'white'` in boardOrientation ternary |
+| `src/services/OpeningTree.ts` | Add `children: this.root` to synthetic root node in `getNode()` |
+| `src/components/GameView.tsx` | Build tree synchronously; read phase from store in handleMove |
+| `src/data/openings/*.json` | Regenerated all FENs (10 files) |
+| `src/__tests__/OpeningTree.test.ts` | Updated test FEN from `e3` to `-` for en passant (matches chess.js) |
+| `scripts/verify-fens.mjs` | Added verification script to validate FENs match chess.js output |
+
+---
