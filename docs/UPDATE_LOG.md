@@ -4,6 +4,85 @@ A running record of changes, remediations, and fixes applied to the OpeningIQ co
 
 ---
 
+## 2026-02-21 — Strategy Briefing Implementation
+
+Implemented the Opening Strategy Briefing feature per [docs/chessopener-strategy-prd.md](chessopener-strategy-prd.md). The `OpeningSummary` component was overhauled from a minimal "Opening Complete" card into a full Strategy Briefing that teaches position type, key idea, middlegame plan, watch-outs, typical goals, and includes a 3-option comprehension quiz.
+
+### 1. New Type Definitions
+
+**Problem:** The test file `OpeningSummary.test.tsx` reported 20 TypeScript errors. The tests targeted a planned Strategy Briefing feature that had not been implemented. Types `Strategy`, `Quiz`, and `QuizOption` did not exist, and `OpeningData` had no `strategy` property.
+
+**Remediation:**
+- Added `PositionType` union: `'open' | 'semi-open' | 'closed' | 'semi-closed'`
+- Added `PlayStyle` union: `'tactical' | 'positional' | 'attacking' | 'defensive' | 'dynamic'`
+- Added `QuizOption` interface: `id`, `text`, `correct`, `explanation`
+- Added `Quiz` interface: `question`, `options: QuizOption[]`
+- Added `Strategy` interface: `positionTypes`, `keyIdea`, `middleGamePlan`, `watchOut`, `typicalGoals`, `quiz`
+- Added `strategy?: Strategy` to `OpeningData`
+
+**Files:** `src/types/index.ts`
+
+---
+
+### 2. Strategy Data in Opening JSON Files
+
+**Problem:** Opening JSON files contained only move trees and defenses. No strategic context (key idea, middlegame plan, quiz) existed for any opening.
+
+**Remediation:**
+- Added a `strategy` object to all 10 opening JSON files:
+  - Italian Game, Ruy Lopez, Sicilian Najdorf, Queen's Gambit, King's Indian
+  - London System, Caro-Kann, French Defense, Scandinavian, Pirc Defense
+- Each strategy includes: `positionTypes`, `keyIdea`, `middleGamePlan`, `watchOut`, `typicalGoals`, and a `quiz` with exactly 3 options (one correct).
+
+**Files:** `src/data/openings/*.json` (all 10 files)
+
+---
+
+### 3. Openings in Game Store
+
+**Problem:** The game store did not expose the openings array. `OpeningSummary` had no way to look up opening data by `openingId` to render strategy content.
+
+**Remediation:**
+- Imported `openings` from `@/data/openings`
+- Added `openings: OpeningData[]` to the `GameStore` interface and initial state
+- Store now provides the full openings list for components that need to resolve `openingId` to `OpeningData`
+
+**Files:** `src/store/gameStore.ts`
+
+---
+
+### 4. OpeningSummary Component Overhaul
+
+**Problem:** The existing `OpeningSummary` was a minimal card showing "Opening Complete", the opening name (derived from `openingId`), the theory line, and evaluation. It provided no strategic context or comprehension check.
+
+**Remediation:**
+- Replaced the component with a full Strategy Briefing card:
+  - Header: "Opening Complete — [Name]", ECO, position-type tags (colored pills)
+  - Sections: KEY IDEA, MIDDLEGAME PLAN, WATCH OUT, TYPICAL GOALS
+  - QUICK CHECK: 3-option quiz with interactive buttons
+- Quiz behavior: selecting an option locks the choice, reveals the explanation, applies green (correct) or red (incorrect) styling, and disables all options
+- Fallback: when `strategy` is absent, renders a minimal card with opening name only (no crash)
+- Removed `formatEval` and "Theory Played" from this component per PRD
+- Position-type tag colors: closed→slate, open→green, semi-open→blue, semi-closed→purple, dynamic→amber, tactical→red, positional→indigo, attacking→orange, defensive→teal
+
+**Files:** `src/components/OpeningSummary.tsx`
+
+---
+
+### 5. OpeningSummary Test Fixes
+
+**Problem:** The test file had 20 linter/TypeScript errors: missing types, invalid `strategy` on `OpeningData`, `opening.strategy` access in validation tests, and implicit `any` in a filter callback. One test failed because "Italian Game" appeared in multiple elements.
+
+**Remediation:**
+- Added explicit type `(o: QuizOption)` to the filter callback in the "exactly one correct option" test
+- Changed "renders the formatted opening name" to use `getByRole('heading', { name: /Opening Complete.*Italian Game/ })` to target the header specifically
+- Changed "still renders the opening name when strategy is absent" to use `getByText(/Italian Game/)` for consistency
+- All 27 tests pass; TypeScript build passes; no linter errors
+
+**Files:** `src/__tests__/OpeningSummary.test.tsx`
+
+---
+
 ## 2025-02-17 — Gap Analysis Remediation (Batch 1)
 
 Following a gap analysis and implementation assessment, five issues were identified and fixed.
