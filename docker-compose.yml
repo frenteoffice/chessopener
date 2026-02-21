@@ -1,0 +1,49 @@
+# Chess Opening Knowledge Base - Docker Compose
+# Usage: docker compose up -d db && python pipeline/eco_ingest.py --source pipeline/data/eco
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: chess_openings
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./pipeline/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+
+  api:
+    build:
+      context: .
+      dockerfile: pipeline/Dockerfile.api
+    working_dir: /app/pipeline
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/chess_openings
+    depends_on:
+      - db
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  worker:
+    build:
+      context: .
+      dockerfile: pipeline/Dockerfile.api
+    working_dir: /app/pipeline
+    command: celery -A celery_app worker --concurrency=8 --loglevel=info
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/chess_openings
+      REDIS_URL: redis://redis:6379/0
+      STOCKFISH_PATH: /usr/bin/stockfish
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data:
