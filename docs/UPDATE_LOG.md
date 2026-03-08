@@ -4,6 +4,183 @@ A running record of changes, remediations, and fixes applied to the OpeningIQ co
 
 ---
 
+## 2026-02-21 — Feedback PRD TDD: Enhanced Feedback & Book Abandonment
+
+Implemented two features from the feedback PRD per [docs/Feedback_PRD_TDD.md](Feedback_PRD_TDD.md): (1) Opening/White feature parity verification, and (2) Book Abandonment Panel with four-part explanation when the opponent deviates from theory.
+
+### 1. New Types for Book Abandonment
+
+**Problem:** No type definitions existed for abandonment explanations. The PRD specified a structured explanation (what happened, why book breaks, opponent strategy, forward guidance) keyed by deviating move.
+
+**Remediation:**
+- Added `AbandonmentReason` interface: `opponentMoveSummary`, `whyBookBreaks`, `opponentStrategy`, `forwardGuidance: string[]` (min 2 items)
+- Added `AbandonmentExplanation` interface: `reasons: Record<string, AbandonmentReason>` (SAN key or `'default'`)
+- Added `abandonmentExplanation?: AbandonmentExplanation` to `OpeningData`
+
+**Files:** `src/types/index.ts`
+
+---
+
+### 2. BookAbandonmentPanel Component
+
+**Problem:** When the opponent deviated from theory, only a minimal "Opponent Deviated" message appeared. No structured explanation of what happened, why it breaks the book, the opponent's strategy, or what to focus on next.
+
+**Remediation:**
+- Created `BookAbandonmentPanel` component that reads `deviationDetected`, `deviationMove`, `openingId`, `openings` from the game store
+- Renders four sections: What happened, Why this breaks the book, Your opponent's approach, What to focus on now
+- Resolves reason by `deviationMove` key (e.g. `Nf6`) with fallback to `'default'`
+- Dismiss button hides panel; "Why did the book end?" replay button re-opens it
+- Generic fallback when opening has no `abandonmentExplanation` (shows deviation move in SAN if available)
+- Returns `null` when `!deviationDetected` or `!openingId`
+
+**Files:** `src/components/BookAbandonmentPanel.tsx`
+
+---
+
+### 3. BookAbandonmentPanel Tests
+
+**Problem:** No test coverage for the new panel. TDD required 25 tests across conditional rendering, four-part content, move resolution, dismiss/replay, and generic fallback.
+
+**Remediation:**
+- Created `src/__tests__/BookAbandonmentPanel.test.tsx` with 25 tests
+- Added `src/test/setup.ts` importing `@testing-library/jest-dom` for DOM matchers (`toBeInTheDocument`, etc.)
+- Configured `vite.config.ts` `setupFiles: ['./src/test/setup.ts']`
+
+**Files:** `src/__tests__/BookAbandonmentPanel.test.tsx`, `src/test/setup.ts`, `vite.config.ts`
+
+---
+
+### 4. OpeningSummary Parity Tests
+
+**Problem:** PRD flagged a perceived gap: strategy commentary might not render equivalently for White vs. Black openings. Needed explicit verification.
+
+**Remediation:**
+- Created `src/__tests__/OpeningSummary.parity.test.tsx` with 6 tests
+- Asserts all strategy sections (keyIdea, middleGamePlan, watchOut, typicalGoals, quiz) render for both `playerColor: 'white'` and `playerColor: 'black'`
+- Asserts section headings are identical between White and Black
+- Data parity: every opening JSON (white and black) has `strategy` field; all have non-empty `keyIdea`
+
+**Files:** `src/__tests__/OpeningSummary.parity.test.tsx`
+
+---
+
+### 5. Abandonment Data in Opening JSONs
+
+**Problem:** All 10 opening JSONs lacked `abandonmentExplanation`. The panel would only show the generic fallback.
+
+**Remediation:**
+- Added `abandonmentExplanation` with a `default` reason to all 10 opening JSONs
+- Each default includes: `opponentMoveSummary`, `whyBookBreaks`, `opponentStrategy`, and `forwardGuidance` (2 items)
+
+**Files:** `src/data/openings/*.json` (italian-game, ruy-lopez, london-system, queens-gambit, kings-indian, sicilian-najdorf, caro-kann, french-defense, pirc-defense, scandinavian)
+
+---
+
+### 6. CoachPanel Integration
+
+**Problem:** The old inline "Opponent Deviated" block was minimal and did not use the new structured explanation.
+
+**Remediation:**
+- Replaced the inline deviation block with `<BookAbandonmentPanel />`
+- Removed unused `STRUCTURE_LABELS`, `deviationMove`, `detectedStructure` from CoachPanel
+- Kept `deviationDetected` for Commentary visibility logic (`!deviationDetected`)
+
+**Files:** `src/components/CoachPanel.tsx`
+
+---
+
+### 7. Data Validation Tests (OpeningSummary)
+
+**Problem:** TDD required validation that openings with `abandonmentExplanation` have a `'default'` key and that each `AbandonmentReason` has `forwardGuidance` with ≥ 2 items.
+
+**Remediation:**
+- Added test: `each opening that has abandonmentExplanation has a default key in reasons`
+- Added test: `each AbandonmentReason in all openings has forwardGuidance with >= 2 items`
+
+**Files:** `src/__tests__/OpeningSummary.test.tsx`
+
+---
+
+## 2026-02-21 — Feedback PRD Change Order 1: Board Highlighting & Move-Specific Reasons
+
+Implemented three fixes from [docs/Feedback_PRD_Change_Order_1.md](Feedback_PRD_Change_Order_1.md): (1) board highlighting for the deviation move, (2) move-specific abandonment reasons in all opening JSONs, and (3) commit of previously untracked Feedback PRD files.
+
+### 1. Board Highlighting for Deviation Move (CO-1)
+
+**Problem:** When the opponent deviated from theory, `deviationMove` was set in the store but the board gave no visual anchor. FR-2.6 required the deviating move to be highlighted on the board when the panel is displayed.
+
+**Remediation:**
+- Added `getDeviationMoveStyles(history, deviationDetected, deviationMove)` to `BoardSection.tsx` — finds the last history entry matching `deviationMove` by SAN and returns purple square styles for from/to
+- Reads `deviationDetected` and `deviationMove` from the game store (previously unused in BoardSection)
+- Layered deviation styles into `customSquareStyles` pipeline: last-move (yellow) → deviation (purple) → selected (blue)
+- Deviation highlight uses `rgba(168, 85, 247, 0.4)` / `0.55` to match BookAbandonmentPanel's purple border
+- Highlight persists as long as `deviationDetected` is true (including after panel dismiss)
+
+**Files:** `src/components/BoardSection.tsx`
+
+---
+
+### 2. getDeviationMoveStyles Unit Tests (CO-1)
+
+**Problem:** No test coverage for the new deviation highlighting logic.
+
+**Remediation:**
+- Created `src/__tests__/BoardSection.test.tsx` with 4 unit tests:
+  - CO1-1: returns empty object when `deviationDetected` is false
+  - CO1-2: returns empty object when `deviationMove` is null
+  - CO1-3: returns empty object when no history entry matches `deviationMove`
+  - CO1-4: returns styles for correct from/to squares when a matching entry exists
+
+**Files:** `src/__tests__/BoardSection.test.tsx`
+
+---
+
+### 3. Move-Specific Abandonment Reasons (CO-2)
+
+**Problem:** Every opening JSON had only a `'default'` key in `abandonmentExplanation.reasons`. The PRD's coaching value lives in SAN-keyed reasons for common opponent deviations.
+
+**Remediation:**
+- Added 3 SAN-keyed reasons per opening (30 total entries) across all 10 opening JSONs
+- Each entry follows `AbandonmentReason` shape: `opponentMoveSummary`, `whyBookBreaks`, `opponentStrategy`, `forwardGuidance` (≥2 items)
+- White openings (Italian, Ruy Lopez, London, Queen's Gambit): deviations are Black's off-tree responses
+- Black openings (King's Indian, Sicilian Najdorf, Caro-Kann, French, Pirc, Scandinavian): deviations are White's sidesteps
+
+**Per-opening SAN keys added:**
+
+| Opening        | Keys added                    |
+|----------------|-------------------------------|
+| Italian Game   | d6, Be7, Nc6                  |
+| Ruy Lopez      | Nf6, Bc5, d6                  |
+| London System  | f5, c5, g6                    |
+| Queen's Gambit | c6, Nf6, e5                   |
+| King's Indian  | f3, Bg5, g3                   |
+| Sicilian Najdorf | c3, Nc3, f4                |
+| Caro-Kann      | c3, Nc3, exd5                 |
+| French Defense | e5, exd5, Nd2                 |
+| Pirc Defense   | f4, Bg5, Be3                  |
+| Scandinavian   | Nf3, d4, c4                   |
+
+**Files:** `src/data/openings/*.json` (all 10)
+
+---
+
+### 4. Commit Untracked Feedback PRD Files (CO-3)
+
+**Problem:** Design docs and new source files from the Feedback PRD implementation were untracked in git.
+
+**Remediation:**
+- Staged and committed 7 files in a single commit:
+  - `docs/chessopener-feedback-prd.md`
+  - `docs/Feedback_PRD_TDD.md`
+  - `docs/Feedback_PRD_Change_Order_1.md`
+  - `src/__tests__/BookAbandonmentPanel.test.tsx`
+  - `src/__tests__/OpeningSummary.parity.test.tsx`
+  - `src/components/BookAbandonmentPanel.tsx`
+  - `src/test/setup.ts`
+- Commit message: `Feedback PRD: book abandonment panel, parity tests, change order docs`
+
+---
+
 ## 2026-02-21 — Strategy Briefing Implementation
 
 Implemented the Opening Strategy Briefing feature per [docs/chessopener-strategy-prd.md](chessopener-strategy-prd.md). The `OpeningSummary` component was overhauled from a minimal "Opening Complete" card into a full Strategy Briefing that teaches position type, key idea, middlegame plan, watch-outs, typical goals, and includes a 3-option comprehension quiz.
@@ -80,6 +257,55 @@ Implemented the Opening Strategy Briefing feature per [docs/chessopener-strategy
 - All 27 tests pass; TypeScript build passes; no linter errors
 
 **Files:** `src/__tests__/OpeningSummary.test.tsx`
+
+---
+
+## 2026-02-21 — Strategy Briefing Change Order 1
+
+Post-implementation follow-up per [docs/Strategy_Briefing_Change_Order_1.md](Strategy_Briefing_Change_Order_1.md). Four gaps and one documentation fix.
+
+### CO-1 — Quiz state not resetting on opening change
+
+**Problem:** `selectedOptionId` resets on unmount/remount but not when `openingId` changes without unmounting (e.g., user completes quiz, navigates back, selects different opening). Stale quiz state from the previous opening persisted.
+
+**Remediation:**
+- Added `useEffect` in `OpeningSummary` to reset `selectedOptionId` to `null` whenever `openingId` changes
+- Added test: `quiz state resets when openingId changes without unmounting`
+
+**Files:** `src/components/OpeningSummary.tsx`, `src/__tests__/OpeningSummary.test.tsx`
+
+---
+
+### CO-2 — `history.length === 0` render guard coverage
+
+**Problem:** Section 1 tests covered `phase !== 'free'` and `openingId === null`, but not `history.length === 0`. Gap in conditional rendering coverage.
+
+**Remediation:**
+- Added test: `does not render when phase is "free" and openingId is set but history is empty`
+
+**Files:** `src/__tests__/OpeningSummary.test.tsx`
+
+---
+
+### CO-3 — PRD committed to version control
+
+**Problem:** `docs/chessopener-strategy-prd.md` was untracked. Design rationale not preserved in history.
+
+**Remediation:**
+- Staged and committed `docs/chessopener-strategy-prd.md` with UPDATE_LOG date fix
+
+**Files:** `docs/chessopener-strategy-prd.md`
+
+---
+
+### CO-4 — UPDATE_LOG date typo
+
+**Problem:** Strategy Briefing entry dated `2025-02-21` instead of `2026-02-21`.
+
+**Remediation:**
+- Corrected date to `2026-02-21`
+
+**Files:** `docs/UPDATE_LOG.md`
 
 ---
 

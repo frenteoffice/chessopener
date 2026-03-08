@@ -11,6 +11,7 @@ import type {
   DeviationEvent,
 } from '@/types'
 import { computeAllMetrics } from '@/services/MetricsEngine'
+import { openings } from '@/data/openings'
 
 const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
@@ -34,6 +35,7 @@ interface GameStore {
   history: { san: string; fen: string; color: 'w' | 'b'; inTheory?: boolean; from?: string; to?: string }[]
   openingId: string | null
   openingNode: OpeningNode | null
+  openings: OpeningData[]
   metrics: Metrics
   commentary: string
   commentaryLoading: boolean
@@ -96,6 +98,7 @@ export const useGameStore = create<GameStore>((set) => ({
   history: [],
   openingId: null,
   openingNode: null,
+  openings,
   metrics: getInitialMetrics(),
   commentary: '',
   commentaryLoading: false,

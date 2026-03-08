@@ -158,5 +158,80 @@
   "defenses": [
     {"id":"classical","name":"Classical (Be2)","moves":"Be2","profile":"The Classical variation with Be2.","tree":[{"san":"Be2","fen":"rnbqk2r/ppppppbp/5np1/8/2PP4/2N2N2/PP2PPPP/R1BQKB1R w KQkq - 4 4","commentary":"Be2 develops the bishop.","children":[]}]},
     {"id":"samisch","name":"Samisch","moves":"f3","profile":"The Samisch variation.","tree":[{"san":"f3","fen":"rnbqk2r/ppppppbp/5np1/8/2PP4/2N2NP1/PP2PP1P/R1BQKB1R b KQkq - 0 4","commentary":"f3 supports the center.","children":[]}]}
-  ]
+  ],
+  "strategy": {
+    "positionTypes": ["closed", "dynamic"],
+    "keyIdea": "Let White build a large pawn center, then undermine and attack it from the flanks — particularly with ...e5 and a kingside pawn storm.",
+    "middleGamePlan": "After ...e5, the classic plan is ...Ne8-d6 or ...Ne8-c7 to regroup, followed by ...f5 and a kingside attack. White will push on the queenside (c5, b5). This is a race — your kingside attack must come before White's queenside breakthrough.",
+    "watchOut": "Playing passively and letting White consolidate — the King's Indian only works if you actively create a kingside attack.",
+    "typicalGoals": [
+      "Play ...e5 to stake a claim in the center",
+      "Reroute the knight toward the kingside (Ne8-d6 or Ne8-f6-g4)",
+      "Launch a kingside pawn storm with ...f5-f4",
+      "Keep the d6 pawn solid to avoid weaknesses in your structure"
+    ],
+    "quiz": {
+      "question": "You're playing the King's Indian. White has a strong pawn center on d4 and e4. What's your plan?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Exchange pawns in the center to simplify the position",
+          "correct": false,
+          "explanation": "Trading pawns relieves White's tension and leads to a simpler position that favors White's space advantage. The King's Indian requires active counterplay."
+        },
+        {
+          "id": "b",
+          "text": "Attack the center with ...e5, then launch a kingside storm",
+          "correct": true,
+          "explanation": "Correct. ...e5 is the key King's Indian move — it challenges White's center and prepares the knight reroute and f5-f4 kingside push."
+        },
+        {
+          "id": "c",
+          "text": "Expand on the queenside with ...a5-a4 to counter White's plans",
+          "correct": false,
+          "explanation": "Queenside expansion is White's plan in the King's Indian. Black's counterplay belongs on the kingside — ...e5 followed by f5-f4."
+        }
+      ]
+    }
+  },
+  "abandonmentExplanation": {
+    "reasons": {
+      "default": {
+        "opponentMoveSummary": "Your opponent stepped off the main theory line with an unusual move, choosing their own path rather than the expected response.",
+        "whyBookBreaks": "The standard line assumes a particular pawn or piece configuration that this move bypasses.",
+        "opponentStrategy": "Your opponent is trying to reach a less-charted position where their preparation or intuition gives them an edge.",
+        "forwardGuidance": [
+          "Prioritize completing your development — get all minor pieces off the back rank.",
+          "Control the center with pawns or piece pressure before launching any flank operations."
+        ]
+      },
+      "f3": {
+        "opponentMoveSummary": "White played f3, preparing e4 and a kingside expansion with the Sämisch setup.",
+        "whyBookBreaks": "The King's Indian main lines assume White plays d4, c4, and Nc3. f3 signals a different plan — space and kingside attack.",
+        "opponentStrategy": "Sämisch Variation intent — White aims for e4, f3, and a space advantage, then launches a kingside attack.",
+        "forwardGuidance": [
+          "Complete your development; White's f3 weakens the dark squares — consider how to exploit that.",
+          "Prepare ...e5 and ...f5; your counterplay belongs on the kingside."
+        ]
+      },
+      "Bg5": {
+        "opponentMoveSummary": "White played Bg5, pinning your king's knight and restricting your options.",
+        "whyBookBreaks": "The main line assumes White develops with Nc3 and Nf3. Bg5 pins the knight and takes away your ...Nf6-e4 resource.",
+        "opponentStrategy": "Averbakh Variation — White pins the knight to limit Black's flexibility and control key squares.",
+        "forwardGuidance": [
+          "Consider ...h6 to challenge the bishop or ...Nbd7 to break the pin.",
+          "Complete development; the pin is annoying but can often be resolved."
+        ]
+      },
+      "g3": {
+        "opponentMoveSummary": "White played g3, fianchettoing the bishop and aiming for a symmetrical structure.",
+        "whyBookBreaks": "The King's Indian main lines assume White plays c4 and Nc3. g3 chooses a fianchetto system that counters your setup.",
+        "opponentStrategy": "Fianchetto System — White develops the bishop to g2 and aims for a solid, symmetrical position that neutralizes Black's kingside plans.",
+        "forwardGuidance": [
+          "Adjust your plan; the fianchetto often leads to a slower, more positional game.",
+          "Consider ...c5 or ...e5 to create counterplay; White's setup is solid but not aggressive."
+        ]
+      }
+    }
+  }
 }

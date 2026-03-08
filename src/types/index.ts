@@ -73,6 +73,51 @@ export interface Defense {
   tree: DefenseNode[]
 }
 
+export type PositionType =
+  | 'open'
+  | 'semi-open'
+  | 'closed'
+  | 'semi-closed'
+
+export type PlayStyle =
+  | 'tactical'
+  | 'positional'
+  | 'attacking'
+  | 'defensive'
+  | 'dynamic'
+
+export interface QuizOption {
+  id: string
+  text: string
+  correct: boolean
+  explanation: string
+}
+
+export interface Quiz {
+  question: string
+  options: QuizOption[] // exactly 3, validated at runtime
+}
+
+export interface Strategy {
+  positionTypes: (PositionType | PlayStyle)[]
+  keyIdea: string
+  middleGamePlan: string
+  watchOut: string
+  typicalGoals: string[]
+  quiz: Quiz
+}
+
+export interface AbandonmentReason {
+  opponentMoveSummary: string
+  whyBookBreaks: string
+  opponentStrategy: string
+  forwardGuidance: string[] // must have >= 2 items
+}
+
+export interface AbandonmentExplanation {
+  reasons: Record<string, AbandonmentReason> // SAN key or "default"
+}
+
 export interface OpeningData {
   id: string
   name: string
@@ -85,6 +130,8 @@ export interface OpeningData {
   rootWeights?: number[]
   moves: OpeningNode[]
   defenses?: Defense[]
+  strategy?: Strategy
+  abandonmentExplanation?: AbandonmentExplanation
 }
 
 export interface DeviationEvent {

@@ -149,5 +149,80 @@
   "defenses": [
     {"id":"english-attack","name":"English Attack","moves":"Be3","profile":"The English Attack targets the kingside.","tree":[{"san":"Be3","fen":"rnbqk2r/pp2ppbp/3p1np1/8/3NP3/2N1B3/PPP2PPP/R2QKB1R w KQkq - 0 6","commentary":"Be3 develops.","children":[]}]},
     {"id":"classical","name":"Classical (Be2)","moves":"Be2","profile":"The Classical variation.","tree":[{"san":"Be2","fen":"rnbqk2r/pp2ppbp/3p1np1/8/3NP3/2N5/PPP1BPPP/R1BQK2R w KQkq - 0 6","commentary":"Be2 develops.","children":[]}]}
-  ]
+  ],
+  "strategy": {
+    "positionTypes": ["semi-open", "dynamic"],
+    "keyIdea": "Create queenside counterplay with ...b5 and ...Bb7 while White attacks on the kingside — an intentional imbalance where both sides race.",
+    "middleGamePlan": "Push ...b5-b4 to undermine White's center and expand on the queenside. Meanwhile, be prepared for White's kingside pawn storm with f4-f5. The Najdorf is not passive — you need to generate active counterplay or White's attack will overwhelm you.",
+    "watchOut": "Reacting to White's kingside threats defensively — the Najdorf is a counterattacking opening and passive defense usually loses.",
+    "typicalGoals": [
+      "Expand on the queenside with ...b5-b4",
+      "Develop the bishop to b7 for long-range queenside pressure",
+      "Castle queenside to keep your king safe from kingside storms",
+      "Counter White's f4-f5 push with ...e5 or ...d5 when timed correctly"
+    ],
+    "quiz": {
+      "question": "White has just played f4-f5 in a Najdorf. You haven't castled yet. What's your priority?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Castle kingside immediately to get your king safe",
+          "correct": false,
+          "explanation": "Castling kingside walks into White's pawn storm — in the Najdorf, queenside castling is usually correct when White attacks on the kingside."
+        },
+        {
+          "id": "b",
+          "text": "Push ...b4 to generate queenside counterplay",
+          "correct": true,
+          "explanation": "Correct. The Najdorf demands counterplay. Pushing ...b4 attacks White's queenside while White attacks your kingside — whoever gets there first wins."
+        },
+        {
+          "id": "c",
+          "text": "Bring the knight back to defend f6",
+          "correct": false,
+          "explanation": "Retreating pieces to defend passively plays into White's hands. The Najdorf is a counterattacking opening — you must create threats, not just block them."
+        }
+      ]
+    }
+  },
+  "abandonmentExplanation": {
+    "reasons": {
+      "default": {
+        "opponentMoveSummary": "Your opponent stepped off the main theory line with an unusual move, choosing their own path rather than the expected response.",
+        "whyBookBreaks": "The standard line assumes a particular pawn or piece configuration that this move bypasses.",
+        "opponentStrategy": "Your opponent is trying to reach a less-charted position where their preparation or intuition gives them an edge.",
+        "forwardGuidance": [
+          "Prioritize completing your development — get all minor pieces off the back rank.",
+          "Control the center with pawns or piece pressure before launching any flank operations."
+        ]
+      },
+      "c3": {
+        "opponentMoveSummary": "White played c3, controlling d4 without allowing the typical ...d5 break (Alapin Variation after 1.e4 c5 2.c3).",
+        "whyBookBreaks": "The Najdorf assumes White plays 2.Nf3 and 3.d4. c3 avoids the Open Sicilian and the ...d5 central break.",
+        "opponentStrategy": "Alapin Variation — White chooses a solid, positional approach that controls d4 and avoids sharp Najdorf theory.",
+        "forwardGuidance": [
+          "Develop normally; the Alapin often leads to slower, strategic play.",
+          "Consider ...d5 when appropriate to challenge White's center."
+        ]
+      },
+      "Nc3": {
+        "opponentMoveSummary": "White played Nc3, developing the knight and preparing a rapid f4-f5 kingside attack.",
+        "whyBookBreaks": "The Najdorf main line assumes 2.Nf3 and 3.d4. Nc3 leads to Grand Prix–style systems with early kingside aggression.",
+        "opponentStrategy": "Grand Prix Attack setup — White develops quickly and aims for f4-f5 before Black completes development.",
+        "forwardGuidance": [
+          "Complete your development; White's kingside attack can be dangerous if you're not ready.",
+          "Challenge the center with ...d5 or ...e5 when the time is right."
+        ]
+      },
+      "f4": {
+        "opponentMoveSummary": "White played f4, launching immediate kingside aggression and giving up central control for initiative.",
+        "whyBookBreaks": "The main line assumes 2.Nf3 and 3.d4. f4 (McDonnell Attack) skips central control in favor of attack.",
+        "opponentStrategy": "McDonnell Attack — White plays for immediate kingside aggression and initiative, accepting a weaker center.",
+        "forwardGuidance": [
+          "Strike in the center with ...d5 or ...e5; White's f4 weakens their position.",
+          "Develop your pieces actively; White's aggression can backfire if you respond correctly."
+        ]
+      }
+    }
+  }
 }

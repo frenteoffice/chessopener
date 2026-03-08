@@ -134,5 +134,80 @@
   "defenses": [
     {"id":"main-line","name":"Main Line (Qxd5)","moves":"2...Qxd5","profile":"The Main Line with Qxd5.","tree":[{"san":"Qxd5","fen":"rnb1kbnr/ppp1pppp/8/3q4/8/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3","commentary":"Qxd5 recaptures. The queen is active.","children":[]}]},
     {"id":"modern","name":"Modern (Nf6)","moves":"2...Nf6","profile":"The Modern with Nf6.","tree":[{"san":"Nf6","fen":"rnbqkb1r/ppp1pppp/5n2/3P4/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2","commentary":"Nf6 develops the knight.","children":[]}]}
-  ]
+  ],
+  "strategy": {
+    "positionTypes": ["semi-open", "dynamic"],
+    "keyIdea": "Immediately challenge White's e4 pawn with ...d5, accepting a slight development deficit in exchange for early piece activity.",
+    "middleGamePlan": "After recapturing the pawn with the queen (usually to d6 or d5), develop quickly and look to use the open d-file. The queen on d6 or d5 can be a target, so piece activity must compensate. Queenside development with ...Bg4, ...Nc6, and then castling queenside or kingside depending on the position is the typical plan.",
+    "watchOut": "Leaving the queen exposed in the center — after ...Qxd5, White gains time with Nc3 attacking it, so you must develop fast enough to keep up.",
+    "typicalGoals": [
+      "Develop pieces quickly to justify the early queen sortie",
+      "Use the semi-open d-file for rook pressure",
+      "Activate the dark-squared bishop to g4 or f5",
+      "Castle quickly before White can exploit the development lead"
+    ],
+    "quiz": {
+      "question": "You played the Scandinavian and recaptured with ...Qxd5. White plays Nc3 attacking your queen. What's the priority?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Retreat the queen to d8 to safety",
+          "correct": false,
+          "explanation": "Retreating to d8 loses a full tempo and undoes the reason for playing ...d5 in the first place. Move the queen to an active square instead."
+        },
+        {
+          "id": "b",
+          "text": "Move the queen to d6 or a5 and develop another piece",
+          "correct": true,
+          "explanation": "Correct. Moving the queen to an active square (d6 or a5) and immediately developing another piece keeps the position dynamic and compensates for the tempo lost."
+        },
+        {
+          "id": "c",
+          "text": "Play ...c6 to support the queen on d5",
+          "correct": false,
+          "explanation": "...c6 is sometimes played but blocks natural piece development to c6. The Scandinavian works best with quick piece activity, not pawn consolidation."
+        }
+      ]
+    }
+  },
+  "abandonmentExplanation": {
+    "reasons": {
+      "default": {
+        "opponentMoveSummary": "Your opponent stepped off the main theory line with an unusual move, choosing their own path rather than the expected response.",
+        "whyBookBreaks": "The standard line assumes a particular pawn or piece configuration that this move bypasses.",
+        "opponentStrategy": "Your opponent is trying to reach a less-charted position where their preparation or intuition gives them an edge.",
+        "forwardGuidance": [
+          "Prioritize completing your development — get all minor pieces off the back rank.",
+          "Control the center with pawns or piece pressure before launching any flank operations."
+        ]
+      },
+      "Nf3": {
+        "opponentMoveSummary": "White played Nf3, developing the knight naturally and delaying Nc3.",
+        "whyBookBreaks": "After 2.exd5 Qxd5 3.Nc3, the book expects Nc3 to attack the queen. Nf3 develops naturally and keeps options open.",
+        "opponentStrategy": "White delays Nc3 — develops naturally, may transpose to main lines, or keeps flexibility for a different setup.",
+        "forwardGuidance": [
+          "Complete development; White's Nf3 often transposes to known lines.",
+          "Be ready for Nc3 next; the queen may need to relocate."
+        ]
+      },
+      "d4": {
+        "opponentMoveSummary": "White played d4, staking an immediate claim in the center before Black completes development.",
+        "whyBookBreaks": "The book expects Nc3 after the queen capture. d4 claims the center immediately and changes the character of the position.",
+        "opponentStrategy": "White plays d4 immediately — stakes central control and aims to restrict Black's development.",
+        "forwardGuidance": [
+          "Complete development; White's center can be challenged with ...e5 or ...c6.",
+          "Consider ...Nc6 or ...Nf6 to develop and challenge the center."
+        ]
+      },
+      "c4": {
+        "opponentMoveSummary": "White played c4, gaining queenside space and challenging Black's queen (Portuguese Variation setup).",
+        "whyBookBreaks": "The book expects Nc3. c4 gains queenside space and attacks the queen on d5, forcing it to move.",
+        "opponentStrategy": "Portuguese Variation setup — White gains queenside space and challenges Black's queen, aiming for a different structure.",
+        "forwardGuidance": [
+          "Relocate the queen to a safe square (a5 or d8); c4 attacks it.",
+          "Complete development; the Portuguese can lead to sharp, tactical play."
+        ]
+      }
+    }
+  }
 }

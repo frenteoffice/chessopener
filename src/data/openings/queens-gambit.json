@@ -177,5 +177,80 @@
   "defenses": [
     {"id":"qgd","name":"Queen's Gambit Declined","moves":"2...e6","profile":"The QGD is the most classical response to the Queen's Gambit.","tree":[{"san":"e6","fen":"rnbqkbnr/ppp2ppp/4p3/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3","commentary":"e6 supports the center.","children":[]}]},
     {"id":"slav","name":"Slav Defense","moves":"2...c6","profile":"The Slav Defense maintains the pawn on d5.","tree":[{"san":"c6","fen":"rnbqkbnr/pp2pppp/2p5/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3","commentary":"c6 supports d5.","children":[]}]}
-  ]
+  ],
+  "strategy": {
+    "positionTypes": ["closed", "positional"],
+    "keyIdea": "Offer a pawn on c4 to gain central control with d4, then use space advantage to restrain Black's piece activity.",
+    "middleGamePlan": "After the opening, focus on piece activity through the c-file and the b1-h7 diagonal. The minority attack (...a4-a5-b4-b5 for White with pawns on c4/d4) is a common long-term plan. In the Exchange Variation, look to dominate the open c-file with rooks.",
+    "watchOut": "Accepting the gambit pawn and trying to hold it — it's usually better to return the pawn for development than to defend it under pressure.",
+    "typicalGoals": [
+      "Control the center with d4 and c4",
+      "Develop the bishop to f4 or g5 before closing the center",
+      "Use the c-file for rook activity in the middlegame",
+      "Restrain Black's queenside counterplay with ...c5 or ...e5"
+    ],
+    "quiz": {
+      "question": "Black accepts the Queen's Gambit and plays ...dxc4. What's your best approach?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Immediately win the pawn back with e3 and Bxc4",
+          "correct": false,
+          "explanation": "While this works, fixating on recapturing immediately can allow Black to equalize easily. Development and center control are the priority."
+        },
+        {
+          "id": "b",
+          "text": "Play e3 and Bxc4 after developing — reclaim the pawn with a tempo",
+          "correct": true,
+          "explanation": "Correct. Developing first and then recapturing with the bishop gains a tempo by threatening Black's position while completing development."
+        },
+        {
+          "id": "c",
+          "text": "Ignore the pawn and develop pieces as quickly as possible",
+          "correct": false,
+          "explanation": "In the QGD accepted, recapturing the c4 pawn after development is correct — you want both development AND central control."
+        }
+      ]
+    }
+  },
+  "abandonmentExplanation": {
+    "reasons": {
+      "default": {
+        "opponentMoveSummary": "Your opponent stepped off the main theory line with an unusual move, choosing their own path rather than the expected response.",
+        "whyBookBreaks": "The standard line assumes a particular pawn or piece configuration that this move bypasses.",
+        "opponentStrategy": "Your opponent is trying to reach a less-charted position where their preparation or intuition gives them an edge.",
+        "forwardGuidance": [
+          "Prioritize completing your development — get all minor pieces off the back rank.",
+          "Control the center with pawns or piece pressure before launching any flank operations."
+        ]
+      },
+      "c6": {
+        "opponentMoveSummary": "Black played c6, defending d5 with the pawn and keeping the c8 bishop unblocked.",
+        "whyBookBreaks": "The Queen's Gambit main lines expect e6 (QGD) or dxc4 (QGA). c6 defends d5 without blocking the bishop.",
+        "opponentStrategy": "Slav Defense — Black keeps the bishop active and aims for a solid, flexible structure with counterplay options.",
+        "forwardGuidance": [
+          "Develop your pieces actively; the Slav often leads to rich, strategic play.",
+          "Control the center with e3 and Nf3; be careful not to overextend."
+        ]
+      },
+      "Nf6": {
+        "opponentMoveSummary": "Black played Nf6, developing the knight and preparing a Grünfeld-style setup with g6.",
+        "whyBookBreaks": "The main lines expect e6 or dxc4. Nf6 allows White to build a center first, then Black will attack it.",
+        "opponentStrategy": "Grünfeld setup — Black allows White's center and then attacks it with pieces and pawn breaks.",
+        "forwardGuidance": [
+          "Build your center with e4 when appropriate; Black will challenge it.",
+          "Develop solidly; the Grünfeld often leads to sharp, tactical positions."
+        ]
+      },
+      "e5": {
+        "opponentMoveSummary": "Black played e5, aggressively counterattacking in the center with a gambit.",
+        "whyBookBreaks": "The standard line expects e6 or dxc4. e5 is a sharp gambit that unbalances the position immediately.",
+        "opponentStrategy": "Albin Counter-Gambit — Black sacrifices a pawn to create immediate tactical chaos and unbalance the game.",
+        "forwardGuidance": [
+          "Accept the center pawns carefully; Black gets compensation in development.",
+          "Complete your development before committing; the position can become very sharp."
+        ]
+      }
+    }
+  }
 }

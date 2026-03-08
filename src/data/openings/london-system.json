@@ -157,5 +157,80 @@
   "defenses": [
     {"id":"kings-indian-setup","name":"King's Indian Setup","moves":"...g6","profile":"Black adopts a King's Indian style setup against the London.","tree":[{"san":"g6","fen":"rnbqkbnr/pppppp1p/6p1/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2","commentary":"g6 prepares the fianchetto.","children":[]}]},
     {"id":"dutch-setup","name":"Dutch Setup","moves":"...f5","profile":"The Dutch setup challenges the center with f5.","tree":[{"san":"f5","fen":"rnbqkbnr/ppppp1pp/8/5p2/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2","commentary":"f5 stakes a claim.","children":[]}]}
-  ]
+  ],
+  "strategy": {
+    "positionTypes": ["closed", "positional"],
+    "keyIdea": "Build a solid, flexible pawn structure with d4, Nf3, and Bf4 that is difficult to attack and works against almost any Black setup.",
+    "middleGamePlan": "After completing development, look for e4 if the center allows it, or maneuver pieces to optimal squares slowly. The bishop on f4 is key — keep it active. Rooks belong on e1 and d1 to support potential central breaks. The London is about accumulating small advantages rather than launching direct attacks.",
+    "watchOut": "Playing too passively and allowing Black to seize the initiative — the London is solid but you still need a plan, not just waiting moves.",
+    "typicalGoals": [
+      "Establish d4 and Bf4 as the backbone of the position",
+      "Castle kingside and connect rooks",
+      "Look for an e4 break when the center allows it",
+      "Use the h2-b8 diagonal if you trade the light-squared bishop"
+    ],
+    "quiz": {
+      "question": "You're playing the London System and your opponent plays ...c5 to challenge your d4 pawn. What's the right reaction?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Capture ...cxd4 to simplify the center",
+          "correct": false,
+          "explanation": "Exchanging on d4 relieves Black's tension and opens the c-file for Black's rooks. In the London, maintaining d4 is usually preferred."
+        },
+        {
+          "id": "b",
+          "text": "Advance e3 and hold d4 firmly",
+          "correct": true,
+          "explanation": "Correct. Holding d4 with e3 keeps your structure intact. The London's strength is its solidity — avoid unnecessary pawn trades that open the position."
+        },
+        {
+          "id": "c",
+          "text": "Play c4 immediately to fight for the center",
+          "correct": false,
+          "explanation": "While c4 is sometimes played in the London, jumping to it immediately can undermine your solid setup. e3 first to consolidate is more consistent."
+        }
+      ]
+    }
+  },
+  "abandonmentExplanation": {
+    "reasons": {
+      "default": {
+        "opponentMoveSummary": "Your opponent stepped off the main theory line with an unusual move, choosing their own path rather than the expected response.",
+        "whyBookBreaks": "The standard line assumes a particular pawn or piece configuration that this move bypasses.",
+        "opponentStrategy": "Your opponent is trying to reach a less-charted position where their preparation or intuition gives them an edge.",
+        "forwardGuidance": [
+          "Prioritize completing your development — get all minor pieces off the back rank.",
+          "Control the center with pawns or piece pressure before launching any flank operations."
+        ]
+      },
+      "f5": {
+        "opponentMoveSummary": "Black played f5, staking a claim on the kingside and avoiding the symmetrical d5-Nf6-e6 structure.",
+        "whyBookBreaks": "The London expects Black to play d5, Nf6, and e6. f5 creates an unbalanced Dutch-London hybrid structure.",
+        "opponentStrategy": "Dutch-London hybrid — Black plays aggressively on the kingside, aiming to disrupt White's solid setup and create dynamic play.",
+        "forwardGuidance": [
+          "Develop your pieces actively; Black's f5 weakens the pawn structure and gives you targets.",
+          "Consider e3 and Nf3 to control the center; Black's kingside expansion can be exploited."
+        ]
+      },
+      "c5": {
+        "opponentMoveSummary": "Black played c5, attacking the center immediately instead of the standard d5 setup.",
+        "whyBookBreaks": "The London expects Black to play d5, Nf6, and e6. c5 signals a Benoni-style counterattack in the center.",
+        "opponentStrategy": "Benoni-London setup — Black counter-attacks in the center immediately, aiming for an unbalanced, asymmetrical game.",
+        "forwardGuidance": [
+          "Play d5 or c6 to control the center; don't let Black's c5 dictate the structure.",
+          "Complete development before committing — the position can become sharp."
+        ]
+      },
+      "g6": {
+        "opponentMoveSummary": "Black played g6, fianchettoing the bishop instead of the standard d5-e6 setup.",
+        "whyBookBreaks": "The London expects Black to play d5, Nf6, and e6. g6 chooses a King's Indian–style fianchetto.",
+        "opponentStrategy": "King's Indian setup vs London — Black develops the bishop to g7 and aims for dynamic counterplay on the kingside.",
+        "forwardGuidance": [
+          "Develop your pieces and control the center; Black's fianchetto can lead to a closed, maneuvering game.",
+          "Avoid overextending on the kingside; Black's g7 bishop can become powerful."
+        ]
+      }
+    }
+  }
 }

@@ -216,5 +216,80 @@
         }
       ]
     }
-  ]
+  ],
+  "strategy": {
+    "positionTypes": ["semi-closed", "positional"],
+    "keyIdea": "Develop pieces toward the center and target the vulnerable f7 pawn before the opponent can fully consolidate.",
+    "middleGamePlan": "After castling kingside, aim to build a strong pawn center with c3 and d4. Coordinate your bishop on c4 with your knights to create pressure on the kingside. The position rewards patient maneuvering over early fireworks.",
+    "watchOut": "Rushing an attack before completing development — the Italian rewards preparation, and premature aggression often backfires.",
+    "typicalGoals": [
+      "Castle kingside early to connect rooks",
+      "Play c3 followed by d4 to challenge the center",
+      "Keep your bishop on c4 active and pointed at f7",
+      "Coordinate knights toward outpost squares on d5 or f5"
+    ],
+    "quiz": {
+      "question": "You've just finished the Italian Game opening. What's your primary middlegame goal?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Launch an immediate kingside pawn storm with f4-f5",
+          "correct": false,
+          "explanation": "The Italian is a positional opening — you need to finish development and castle before attacking."
+        },
+        {
+          "id": "b",
+          "text": "Play c3 and d4 to establish a strong pawn center",
+          "correct": true,
+          "explanation": "Correct. The c3-d4 break is the Italian's main strategic threat, seizing central space and activating your pieces."
+        },
+        {
+          "id": "c",
+          "text": "Trade your bishop for the opponent's knight to simplify",
+          "correct": false,
+          "explanation": "Your bishop on c4 is one of your best pieces in the Italian — keep it active and pointed at f7."
+        }
+      ]
+    }
+  },
+  "abandonmentExplanation": {
+    "reasons": {
+      "default": {
+        "opponentMoveSummary": "Your opponent stepped off the main theory line with an unusual move, choosing their own path rather than the expected response.",
+        "whyBookBreaks": "The standard line assumes a particular pawn or piece configuration that this move bypasses.",
+        "opponentStrategy": "Your opponent is trying to reach a less-charted position where their preparation or intuition gives them an edge.",
+        "forwardGuidance": [
+          "Prioritize completing your development — get all minor pieces off the back rank.",
+          "Control the center with pawns or piece pressure before launching any flank operations."
+        ]
+      },
+      "d6": {
+        "opponentMoveSummary": "Black played d6, supporting the e5 pawn and preparing a solid but passive setup.",
+        "whyBookBreaks": "The Italian main lines assume Black will develop actively with Bc5 or Nf6. d6 avoids the sharp Giuoco Piano and Two Knights entirely.",
+        "opponentStrategy": "Hungarian Defense style — Black chooses solidity over activity, avoiding sharp tactical lines in favor of a slower, more cramped game.",
+        "forwardGuidance": [
+          "Play d4 when ready to challenge the center — Black's passive setup gives you space to expand.",
+          "Develop your pieces actively; Black's d6-e5 chain can become a target for piece pressure."
+        ]
+      },
+      "Be7": {
+        "opponentMoveSummary": "Black played Be7, developing the bishop to a solid square instead of the active c5.",
+        "whyBookBreaks": "The main Italian lines expect Black's bishop on c5 (Giuoco Piano) or the knight on f6 (Two Knights). Be7 sidesteps both.",
+        "opponentStrategy": "Paris Defense — Black develops solidly to e7, avoiding sharp theory and aiming for a quiet, positional game.",
+        "forwardGuidance": [
+          "Complete development and castle — you retain a small space advantage.",
+          "Consider d4 or d3 to control the center; Black's passive bishop gives you time."
+        ]
+      },
+      "Nc6": {
+        "opponentMoveSummary": "Black played Nc6, developing the knight to defend e5 and control d4.",
+        "whyBookBreaks": "At this move order, the book may expect a different response. Nc6 leads to the Italian proper or can transpose to other lines.",
+        "opponentStrategy": "Black opts for classical development, aiming for a standard Italian or Ruy Lopez–style position.",
+        "forwardGuidance": [
+          "Continue with Bc4 or Bb5 depending on your preferred line — both are strong.",
+          "Control the center and complete kingside development before committing to a plan."
+        ]
+      }
+    }
+  }
 }

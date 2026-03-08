@@ -132,5 +132,80 @@
   "defenses": [
     {"id":"classical","name":"Classical","moves":"...Nf6","profile":"The Classical Pirc.","tree":[{"san":"Nf6","fen":"rnbqkb1r/pppppppp/5n2/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 2 2","commentary":"Nf6 develops.","children":[]}]},
     {"id":"austrian","name":"Austrian Attack","moves":"f4","profile":"The Austrian Attack.","tree":[{"san":"f4","fen":"rnbqk2r/ppppppbp/5np1/8/4PP2/2N2N2/PPPP2PP/R1BQKB1R b KQkq - 0 4","commentary":"f4 expands on the kingside.","children":[]}]}
-  ]
+  ],
+  "strategy": {
+    "positionTypes": ["semi-closed", "dynamic"],
+    "keyIdea": "Let White build a large center and then undermine it with piece pressure and well-timed pawn breaks — a hypermodern approach.",
+    "middleGamePlan": "After fianchettoing the bishop on g7, use it as your main weapon against White's center. ...c5 and ...d6-d5 are the typical breaks depending on the setup. The g7 bishop is the cornerstone of Black's position — protect it and keep it active. Look for ...Bg4 to pin the knight and relieve pressure, and castle kingside to connect the rook with the g7 bishop.",
+    "watchOut": "Allowing White to close the position and attack on the kingside before you've undermined the center — in the Pirc, timing of the counterattack is everything.",
+    "typicalGoals": [
+      "Fianchetto the bishop on g7 as the main attacking piece",
+      "Play ...c5 to undermine White's d4 pawn",
+      "Use ...d5 as a pawn break when White's center overextends",
+      "Castle kingside and use the bishop-rook battery along the g-file"
+    ],
+    "quiz": {
+      "question": "You're playing the Pirc. White has built a strong center with e4 and d4. What's your main weapon?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Exchange your fianchettoed bishop to remove a piece and simplify",
+          "correct": false,
+          "explanation": "The g7 bishop is the core of the Pirc — trading it voluntarily gives up your best piece and leaves you without compensation for allowing White's center."
+        },
+        {
+          "id": "b",
+          "text": "Use the g7 bishop to exert long-range pressure and break with ...c5",
+          "correct": true,
+          "explanation": "Correct. The g7 bishop pressures White's center from the flank, and ...c5 is the typical undermining break that challenges d4 and creates counterplay."
+        },
+        {
+          "id": "c",
+          "text": "Push ...e5 immediately to fight for the center directly",
+          "correct": false,
+          "explanation": "...e5 without preparation is premature in the Pirc and can leave you with a weakened d6 pawn. Proper preparation with ...c5 or piece development comes first."
+        }
+      ]
+    }
+  },
+  "abandonmentExplanation": {
+    "reasons": {
+      "default": {
+        "opponentMoveSummary": "Your opponent stepped off the main theory line with an unusual move, choosing their own path rather than the expected response.",
+        "whyBookBreaks": "The standard line assumes a particular pawn or piece configuration that this move bypasses.",
+        "opponentStrategy": "Your opponent is trying to reach a less-charted position where their preparation or intuition gives them an edge.",
+        "forwardGuidance": [
+          "Prioritize completing your development — get all minor pieces off the back rank.",
+          "Control the center with pawns or piece pressure before launching any flank operations."
+        ]
+      },
+      "f4": {
+        "opponentMoveSummary": "White played f4, expanding on the kingside immediately (Austrian Attack).",
+        "whyBookBreaks": "The Pirc main lines assume White plays d4, Nc3, and Nf3. f4 is the most aggressive deviation — immediate kingside expansion.",
+        "opponentStrategy": "Austrian Attack — White plays the most aggressive line, with immediate f4-f5 threat and kingside expansion.",
+        "forwardGuidance": [
+          "Complete development quickly; White's f4 can become dangerous if you're passive.",
+          "Consider ...c5 or ...e5 to challenge the center; the Austrian demands active play."
+        ]
+      },
+      "Bg5": {
+        "opponentMoveSummary": "White played Bg5, pinning your knight and pressuring your kingside development.",
+        "whyBookBreaks": "The main line assumes d4, Nc3, Nf3. Bg5 pins the knight and restricts Black's options.",
+        "opponentStrategy": "Classical with pin — White pressures Black's kingside development and limits flexibility.",
+        "forwardGuidance": [
+          "Consider ...h6 to challenge the bishop or develop around the pin.",
+          "Complete development; the pin is annoying but can often be resolved with ...Nbd7 or ...h6."
+        ]
+      },
+      "Be3": {
+        "opponentMoveSummary": "White played Be3, developing the bishop solidly and delaying commitment in the center (Byrne Variation).",
+        "whyBookBreaks": "The main line assumes d4, Nc3, Nf3. Be3 develops solidly and keeps options open.",
+        "opponentStrategy": "Byrne Variation — White develops solidly, delays committing the center, and aims for a flexible setup.",
+        "forwardGuidance": [
+          "Complete your development; White's setup is solid but not aggressive.",
+          "Consider ...c5 or ...e5 to create counterplay when ready."
+        ]
+      }
+    }
+  }
 }

@@ -138,5 +138,80 @@
   "defenses": [
     {"id":"classical","name":"Classical","moves":"...dxe4","profile":"The Classical Caro-Kann.","tree":[{"san":"dxe4","fen":"rnbqkbnr/pp2pppp/2p5/8/3Pp3/2N5/PPP2PPP/R1BQKBNR w KQkq - 0 4","commentary":"The Classical - Black takes and will develop.","children":[]}]},
     {"id":"advance","name":"Advance Variation","moves":"...Bf5","profile":"The Advance Variation.","tree":[{"san":"Bf5","fen":"rnbqkbnr/pp2pppp/2p5/5p2/3P4/2N5/PPP2PPP/R1BQKBNR w KQkq - 0 4","commentary":"Bf5 develops the bishop.","children":[]}]}
-  ]
+  ],
+  "strategy": {
+    "positionTypes": ["semi-open", "positional"],
+    "keyIdea": "Support the d5 pawn challenge with ...c6 before playing it, achieving a solid central presence without the bad bishop problem of the French.",
+    "middleGamePlan": "After the opening, Black's light-squared bishop is free to develop outside the pawn chain — a key advantage over the French Defense. Look to exchange the light-squared bishops if possible. Black's plans often involve queenside play with ...c5 or centralizing the knight on d5.",
+    "watchOut": "Falling into passive, cramped positions — the Caro-Kann should be solid but not inert, and Black needs to create active counterplay.",
+    "typicalGoals": [
+      "Solve the light-squared bishop before it becomes trapped",
+      "Aim for ...c5 to challenge White's center",
+      "Centralize the knight on d5 if the opportunity arises",
+      "Keep the pawn structure intact and avoid unnecessary weaknesses"
+    ],
+    "quiz": {
+      "question": "You're playing the Caro-Kann. What's the main structural advantage over the French Defense?",
+      "options": [
+        {
+          "id": "a",
+          "text": "You have more space on the queenside",
+          "correct": false,
+          "explanation": "Space distribution is similar between the Caro-Kann and French — the key difference is about bishop activity, not space."
+        },
+        {
+          "id": "b",
+          "text": "Your light-squared bishop isn't locked behind your pawns",
+          "correct": true,
+          "explanation": "Correct. In the French, the light-squared bishop is often permanently bad. In the Caro-Kann, ...c6 before ...d5 means the bishop can come out to f5 or g4."
+        },
+        {
+          "id": "c",
+          "text": "You can attack on the kingside more easily",
+          "correct": false,
+          "explanation": "The Caro-Kann is a positional, solid opening — Black typically looks for queenside counterplay, not kingside attacks."
+        }
+      ]
+    }
+  },
+  "abandonmentExplanation": {
+    "reasons": {
+      "default": {
+        "opponentMoveSummary": "Your opponent stepped off the main theory line with an unusual move, choosing their own path rather than the expected response.",
+        "whyBookBreaks": "The standard line assumes a particular pawn or piece configuration that this move bypasses.",
+        "opponentStrategy": "Your opponent is trying to reach a less-charted position where their preparation or intuition gives them an edge.",
+        "forwardGuidance": [
+          "Prioritize completing your development — get all minor pieces off the back rank.",
+          "Control the center with pawns or piece pressure before launching any flank operations."
+        ]
+      },
+      "c3": {
+        "opponentMoveSummary": "White played c3, preparing to advance e5 and gain space in the center (Advance Variation setup).",
+        "whyBookBreaks": "The Caro-Kann main lines assume White plays d4 and Nc3 or Nd2. c3 prepares the Advance with e5, closing the center.",
+        "opponentStrategy": "Advance Variation setup — White gains space with e5, closes the center, and aims to attack with f4-f5.",
+        "forwardGuidance": [
+          "Complete development; the Advance often leads to a closed, strategic battle.",
+          "Consider ...c5 or ...Bf5 to create counterplay; White's space can be challenged."
+        ]
+      },
+      "Nc3": {
+        "opponentMoveSummary": "White played Nc3, developing the knight and heading for the Classical or Fantasy Variation.",
+        "whyBookBreaks": "The main lines assume d4 and Nd2 or a different move order. Nc3 leads to sharper lines where White may sacrifice a pawn.",
+        "opponentStrategy": "Classical or Fantasy Variation — White develops actively; Nc3 can lead to sharp tactics and pawn sacrifices.",
+        "forwardGuidance": [
+          "Be alert for tactics; the Nc3 lines can be sharp.",
+          "Complete development and castle; White's aggression can be met with solid play."
+        ]
+      },
+      "exd5": {
+        "opponentMoveSummary": "White played exd5, exchanging the central pawns and simplifying to a symmetrical structure.",
+        "whyBookBreaks": "The main lines assume White maintains the tension with Nc3 or Nd2. exd5 removes the central tension immediately.",
+        "opponentStrategy": "Exchange Variation — White simplifies to a symmetrical pawn structure and aims for a slight endgame advantage.",
+        "forwardGuidance": [
+          "Recapture with ...cxd5; the position is roughly equal.",
+          "Complete development; the Exchange often leads to a quiet, technical game."
+        ]
+      }
+    }
+  }
 }

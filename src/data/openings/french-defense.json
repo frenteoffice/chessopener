@@ -140,5 +140,80 @@
   "defenses": [
     {"id":"advance","name":"Advance Variation","moves":"...d5","profile":"The Advance Variation.","tree":[{"san":"d5","fen":"rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3","commentary":"d5 challenges the center.","children":[]}]},
     {"id":"tarrasch","name":"Tarrasch","moves":"...Nf6","profile":"The Tarrasch variation.","tree":[{"san":"Nf6","fen":"rnbqkb1r/pppp1ppp/4pn2/8/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 2 3","commentary":"Nf6 develops.","children":[]}]}
-  ]
+  ],
+  "strategy": {
+    "positionTypes": ["closed", "positional"],
+    "keyIdea": "Build a solid pawn chain with ...e6 and ...d5, then attack White's chain at its base while accepting a temporarily cramped position.",
+    "middleGamePlan": "The French's main battle is the pawn chain — attack White's chain at e4 with ...c5 and ...f6, or expand on the queenside. The bad light-squared bishop is the French's main weakness and must be activated by exchanging it or finding an outpost. In the Winawer and Nimzowitsch, dynamic piece play compensates for the structural concession.",
+    "watchOut": "Neglecting the light-squared bishop — in the French it can become permanently bad, so you must have a concrete plan to deal with it every game.",
+    "typicalGoals": [
+      "Attack White's pawn chain with ...c5 to undermine d4",
+      "Create queenside counterplay with ...a6 and ...b5",
+      "Find a role for the light-squared bishop (exchange it or find an outpost)",
+      "Use the half-open c-file with rooks after ...cxd4"
+    ],
+    "quiz": {
+      "question": "In a typical French Defense middlegame, White has pawns on d4 and e5. What's Black's best strategic plan?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Attack the e5 pawn directly with ...f6",
+          "correct": false,
+          "explanation": "While ...f6 is sometimes played, it weakens Black's kingside. The proper attack is at the base of the chain — d4 — not the tip."
+        },
+        {
+          "id": "b",
+          "text": "Attack the base of the chain with ...c5 targeting d4",
+          "correct": true,
+          "explanation": "Correct. Pawn chains are attacked at the base. White's chain rests on d4, so ...c5 is Black's main counterattacking weapon in the French."
+        },
+        {
+          "id": "c",
+          "text": "Exchange the bad bishop via ...Be7-d6",
+          "correct": false,
+          "explanation": "Dealing with the bad bishop matters, but it isn't the primary plan. ...c5 attacking d4 is the French's central strategic idea."
+        }
+      ]
+    }
+  },
+  "abandonmentExplanation": {
+    "reasons": {
+      "default": {
+        "opponentMoveSummary": "Your opponent stepped off the main theory line with an unusual move, choosing their own path rather than the expected response.",
+        "whyBookBreaks": "The standard line assumes a particular pawn or piece configuration that this move bypasses.",
+        "opponentStrategy": "Your opponent is trying to reach a less-charted position where their preparation or intuition gives them an edge.",
+        "forwardGuidance": [
+          "Prioritize completing your development — get all minor pieces off the back rank.",
+          "Control the center with pawns or piece pressure before launching any flank operations."
+        ]
+      },
+      "e5": {
+        "opponentMoveSummary": "White played e5, advancing the pawn to gain space and close the center (Advance Variation).",
+        "whyBookBreaks": "The French main lines assume White plays d4 and Nc3 (Winawer/Classical). e5 gains space and attacks before Black can free the position.",
+        "opponentStrategy": "Advance Variation — White gains space, closes the center, and aims to attack on the kingside before Black completes development.",
+        "forwardGuidance": [
+          "Play ...c5 to challenge the center; it's Black's main counterattacking break.",
+          "Complete development; the Advance can become cramped for Black if you don't act."
+        ]
+      },
+      "exd5": {
+        "opponentMoveSummary": "White played exd5, exchanging the central pawns and removing the tension immediately.",
+        "whyBookBreaks": "The main lines assume White maintains the pawn tension with Nc3. exd5 simplifies to a symmetrical structure.",
+        "opponentStrategy": "Exchange Variation — White removes central tension and aims for a symmetrical pawn structure and a quiet game.",
+        "forwardGuidance": [
+          "Recapture with ...exd5; the position is roughly equal.",
+          "Complete development; the Exchange often leads to a technical, maneuvering game."
+        ]
+      },
+      "Nd2": {
+        "opponentMoveSummary": "White played Nd2, developing the knight and avoiding the pin on Nc3 (Tarrasch Variation).",
+        "whyBookBreaks": "The main lines assume Nc3, which can be pinned by ...Bb4. Nd2 avoids the pin and prepares a flexible center.",
+        "opponentStrategy": "Tarrasch Variation — White avoids the pin, prepares Ngf3, and aims for a flexible, solid setup.",
+        "forwardGuidance": [
+          "Develop with ...Nf6 and ...c5; the Tarrasch is solid but allows Black counterplay.",
+          "Consider ...cxd4 at the right moment to open the position."
+        ]
+      }
+    }
+  }
 }

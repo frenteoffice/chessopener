@@ -9,7 +9,7 @@ interface BoardSectionProps {
 }
 
 export function BoardSection({ onMove, boardFlipped }: BoardSectionProps) {
-  const { fen, engineThinking, playerColor, history } = useGameStore()
+  const { fen, engineThinking, playerColor, history, deviationDetected, deviationMove } = useGameStore()
   const [selectedSquare, setSelectedSquare] = useState<string | null>(null)
 
   const handlePieceDrop = useCallback(
@@ -97,6 +97,7 @@ export function BoardSection({ onMove, boardFlipped }: BoardSectionProps) {
           customLightSquareStyle={{ backgroundColor: '#334155' }}
           customSquareStyles={{
             ...(getLastMoveStyles(history) || {}),
+            ...getDeviationMoveStyles(history, deviationDetected, deviationMove),
             ...selectedSquareStyles,
           }}
           showBoardNotation
@@ -119,5 +120,19 @@ function getLastMoveStyles(
   return {
     [last.from]: { backgroundColor: 'rgba(255, 255, 0, 0.3)' },
     [last.to]: { backgroundColor: 'rgba(255, 255, 0, 0.3)' },
+  }
+}
+
+export function getDeviationMoveStyles(
+  history: { san: string; from?: string; to?: string }[],
+  deviationDetected: boolean,
+  deviationMove: string | null
+): Record<string, object> {
+  if (!deviationDetected || !deviationMove) return {}
+  const entry = [...history].reverse().find((h) => h.san === deviationMove)
+  if (!entry?.from || !entry?.to) return {}
+  return {
+    [entry.from]: { backgroundColor: 'rgba(168, 85, 247, 0.4)' },
+    [entry.to]: { backgroundColor: 'rgba(168, 85, 247, 0.55)' },
   }
 }

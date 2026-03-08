@@ -3,6 +3,7 @@ import { MoveList } from './MoveList'
 import { Commentary } from './Commentary'
 import { MetricsDashboard } from './MetricsDashboard'
 import { OpeningSummary } from './OpeningSummary'
+import { BookAbandonmentPanel } from './BookAbandonmentPanel'
 import { useGameStore } from '@/store/gameStore'
 import { openings } from '@/data/openings'
 
@@ -11,19 +12,6 @@ const BADGE_CONFIG = {
   hybrid: { color: 'bg-purple-600', label: 'Hybrid' },
   'specific-defense': { color: 'bg-amber-500', label: 'Specific Defense' },
 } as const
-
-const STRUCTURE_LABELS: Record<string, string> = {
-  'open-center': 'Open center',
-  'closed-center': 'Closed center',
-  'isolated-queens-pawn': 'Isolated queen\'s pawn',
-  'hanging-pawns': 'Hanging pawns',
-  'caro-kann-structure': 'Caro-Kann structure',
-  'slav-structure': 'Slav structure',
-  'french-structure': 'French structure',
-  'kings-indian-structure': 'King\'s Indian structure',
-  'london-structure': 'London structure',
-  'sicilian-structure': 'Sicilian structure',
-}
 
 export function CoachPanel() {
   const {
@@ -34,8 +22,6 @@ export function CoachPanel() {
     openingId,
     history,
     deviationDetected,
-    deviationMove,
-    detectedStructure,
     transpositionPending,
     transpositionOpening,
     acceptTransposition,
@@ -117,22 +103,7 @@ export function CoachPanel() {
         </div>
       )}
 
-      {deviationDetected && (
-        <div className="bg-purple-900/30 rounded-lg p-4 border-2 border-purple-500/50">
-          <h3 className="text-purple-200 text-sm font-medium mb-2">Opponent Deviated</h3>
-          <p className="text-slate-300 text-sm mb-2">
-            The engine played <strong>{deviationMove}</strong>, leaving the opening book.
-          </p>
-          {detectedStructure && detectedStructure !== 'unknown' && (
-            <p className="text-slate-400 text-xs mb-2">
-              Structure: {STRUCTURE_LABELS[detectedStructure] ?? detectedStructure}
-            </p>
-          )}
-          <p className="text-slate-400 text-xs">
-            Consider how to adapt your plan to this new structure.
-          </p>
-        </div>
-      )}
+      <BookAbandonmentPanel />
 
       <OpeningSummary />
       {(commentary || commentaryLoading) && !deviationDetected && (

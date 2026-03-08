@@ -216,5 +216,80 @@
   "defenses": [
     {"id":"berlin","name":"Berlin Defense","moves":"3...Nf6","profile":"The Berlin Defense is a solid response that avoids the main Ruy Lopez theory.","tree":[{"san":"Nf6","fen":"r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4","commentary":"Nf6 develops the knight.","children":[]}]},
     {"id":"marshall","name":"Marshall Attack","moves":"8...d5","profile":"The Marshall Attack is a sharp counterattacking system.","tree":[{"san":"d5","fen":"r1bq1rk1/ppp2ppp/2n2n2/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQ1RK1 w - - 0 9","commentary":"d5 breaks in the center.","children":[]}]}
-  ]
+  ],
+  "strategy": {
+    "positionTypes": ["semi-closed", "positional"],
+    "keyIdea": "Pressure the knight on c6 that defends e5, indirectly threatening to win the central pawn.",
+    "middleGamePlan": "Castle kingside and play d3 or d4 to control the center. The Ruy Lopez is a long-term game — White builds pressure slowly through piece activity and pawn tension rather than immediate tactics. Rook lifts and piece transfers to the kingside are common plans.",
+    "watchOut": "Chasing the bishop retreat too eagerly — the bishop on b5/a4 is doing positional work and shouldn't be traded lightly.",
+    "typicalGoals": [
+      "Maintain tension with the bishop on a4 as long as useful",
+      "Castle and prepare d4 to fight for the center",
+      "Use the c3-d4 pawn chain to gain central space",
+      "Look for piece transfers to the kingside in the later middlegame"
+    ],
+    "quiz": {
+      "question": "Your bishop is on a4 putting pressure on the c6 knight. Your opponent plays ...b5 to chase it. What's the right idea?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Trade the bishop for the c6 knight immediately",
+          "correct": false,
+          "explanation": "Trading too early gives Black an easy game — the bishop has long-term value pressuring the position."
+        },
+        {
+          "id": "b",
+          "text": "Retreat the bishop to b3 to maintain the diagonal",
+          "correct": true,
+          "explanation": "Correct. Bb3 keeps the bishop active on the a2-g8 diagonal while maintaining pressure. This is the standard Ruy Lopez response."
+        },
+        {
+          "id": "c",
+          "text": "Ignore it and launch a kingside attack immediately",
+          "correct": false,
+          "explanation": "You haven't castled yet — attacking before completing development is premature in the Ruy Lopez."
+        }
+      ]
+    }
+  },
+  "abandonmentExplanation": {
+    "reasons": {
+      "default": {
+        "opponentMoveSummary": "Your opponent stepped off the main theory line with an unusual move, choosing their own path rather than the expected response.",
+        "whyBookBreaks": "The standard line assumes a particular pawn or piece configuration that this move bypasses.",
+        "opponentStrategy": "Your opponent is trying to reach a less-charted position where their preparation or intuition gives them an edge.",
+        "forwardGuidance": [
+          "Prioritize completing your development — get all minor pieces off the back rank.",
+          "Control the center with pawns or piece pressure before launching any flank operations."
+        ]
+      },
+      "Nf6": {
+        "opponentMoveSummary": "Black played Nf6, developing the knight to f6 instead of playing the Morphy Defense with a6.",
+        "whyBookBreaks": "The Ruy Lopez main line assumes Black will play a6 (Morphy Defense) to challenge the bishop. Nf6 sidesteps that entirely.",
+        "opponentStrategy": "Berlin Defense — Black forces a knight trade and aims for a solid Berlin endgame that defuses White's attacking chances.",
+        "forwardGuidance": [
+          "Expect exchanges; the Berlin often leads to an endgame where technique matters more than attack.",
+          "Develop solidly and control key squares — avoid overextending in the opening."
+        ]
+      },
+      "Bc5": {
+        "opponentMoveSummary": "Black played Bc5, developing the bishop to an active square and attacking your bishop on b5.",
+        "whyBookBreaks": "The main line expects a6. Bc5 launches an immediate counterattack on the bishop and changes the character of the position.",
+        "opponentStrategy": "Classical Defense — Black develops actively and challenges White's bishop before completing development.",
+        "forwardGuidance": [
+          "Consider c3 and d4 to fight for the center; Black's bishop can become a target.",
+          "Complete development before committing — the position can become sharp."
+        ]
+      },
+      "d6": {
+        "opponentMoveSummary": "Black played d6, supporting e5 and preparing a solid but cramped development.",
+        "whyBookBreaks": "The Morphy Defense (a6) is the main response. d6 (Steinitz Defense) chooses solidity over flexibility.",
+        "opponentStrategy": "Steinitz Defense — Black accepts a cramped position in exchange for a solid pawn structure and slow development.",
+        "forwardGuidance": [
+          "Play d4 when ready to open the center — Black's structure can become passive.",
+          "Develop pieces actively; the d6-e5 chain may become a target for piece pressure."
+        ]
+      }
+    }
+  }
 }
